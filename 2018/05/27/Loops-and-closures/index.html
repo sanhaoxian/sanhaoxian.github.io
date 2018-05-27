@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="JavaScript," />
 
 
 
@@ -79,16 +79,18 @@
 
 
 
-<meta name="description" content="记录生活,记录编程学习">
-<meta property="og:type" content="website">
-<meta property="og:title" content="San&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="闭包定义: 当函数可以记住并访问所在的词法作用域时,就产生了闭包,即使函数是在当前词法作用域之外执行.  说明闭包,for循环是最常见的例子:12345for(var i=1; i&amp;lt;=5; i++)&amp;#123;	setTimeout( function timer()&amp;#123;		console.log( i );	&amp;#125;, i*1000);&amp;#125; 正常情况下,我们对这段代码">
+<meta name="keywords" content="JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Loops and closures">
+<meta property="og:url" content="http://yoursite.com/2018/05/27/Loops-and-closures/index.html">
 <meta property="og:site_name" content="San&#39;s Blog">
-<meta property="og:description" content="记录生活,记录编程学习">
+<meta property="og:description" content="闭包定义: 当函数可以记住并访问所在的词法作用域时,就产生了闭包,即使函数是在当前词法作用域之外执行.  说明闭包,for循环是最常见的例子:12345for(var i=1; i&amp;lt;=5; i++)&amp;#123;	setTimeout( function timer()&amp;#123;		console.log( i );	&amp;#125;, i*1000);&amp;#125; 正常情况下,我们对这段代码">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-27T14:18:40.688Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="San&#39;s Blog">
-<meta name="twitter:description" content="记录生活,记录编程学习">
+<meta name="twitter:title" content="Loops and closures">
+<meta name="twitter:description" content="闭包定义: 当函数可以记住并访问所在的词法作用域时,就产生了闭包,即使函数是在当前词法作用域之外执行.  说明闭包,for循环是最常见的例子:12345for(var i=1; i&amp;lt;=5; i++)&amp;#123;	setTimeout( function timer()&amp;#123;		console.log( i );	&amp;#125;, i*1000);&amp;#125; 正常情况下,我们对这段代码">
 
 
 
@@ -118,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/05/27/Loops-and-closures/"/>
 
 
 
 
 
-  <title>San's Blog</title>
+  <title>Loops and closures | San's Blog</title>
   
 
 
@@ -143,8 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -217,9 +218,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -249,9 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/27/Loops-and-closures/" itemprop="url">Loops and closures</a></h1>
+          <h1 class="post-title" itemprop="name headline">Loops and closures</h1>
         
 
         <div class="post-meta">
@@ -323,9 +322,7 @@
       
 
       
-        
-          
-            <blockquote>
+        <blockquote>
 <p>闭包定义: <em>当函数可以记住并访问所在的词法作用域时,就产生了闭包,即使函数是在当前词法作用域之外执行.</em></p>
 </blockquote>
 <p>说明闭包,for循环是最常见的例子:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>; i&lt;=<span class="number">5</span>; i++)&#123;</span><br><span class="line">	setTimeout( <span class="function"><span class="keyword">function</span> <span class="title">timer</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log( i );</span><br><span class="line">	&#125;, i*<span class="number">1000</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
@@ -344,8 +341,6 @@
 <p>IIFE会通过声明并立即执行一个函数来创建作用域<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>; i&lt;=<span class="number">5</span>; i++ )&#123;</span><br><span class="line">	(<span class="function"><span class="keyword">function</span>(<span class="params">j</span>) </span>&#123;</span><br><span class="line">		setTimeout( <span class="function"><span class="keyword">function</span> <span class="title">timer</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">			<span class="built_in">console</span>.log(j);</span><br><span class="line">		&#125;, i*<span class="number">1000</span>);</span><br><span class="line">	&#125;)( i );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>如果没有变量j,那么IIFE只是一个什么都没有的空作用域,它需要一点实质的内容才能为我们所利用,它需要变量,用来存储每个迭代的中储存的i的值;现在这段代码可以正常执行了.<br>问题解决;</p>
 
-          
-        
       
     </div>
     
@@ -360,157 +355,36 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/24/Transformation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="SanHaoXian">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="San's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/24/Transformation/" itemprop="url">蜕变计划</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-24T21:32:44+08:00">
-                2018-05-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">随笔</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
+            <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
           
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="计划说明"><a href="#计划说明" class="headerlink" title="计划说明"></a>计划说明</h4><p>首先说明是效仿@Wall_Breaker<a href="https://segmentfault.com/a/1190000015002208?utm_source=index-hottest" target="_blank" rel="noopener">传送门</a>同志的,某天在segmentfault上看到他的实验,自己觉得很不错,向他学习.</p>
-<p>  1.自2018/05/24起,实施该计划,最终目标,改变自己,探索新的学习方法,实现蜕变.<br>  2.计划时间为一年.<br>  3.每天记录自己的学习过程,不断更新迭代计划,以达到更好的效果.<br>  4.计划结束我就跳槽,寻求更大的平台,试试自己的能力..<br>  5.本计划旨在提升自己的身体素质,编程能力!</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
       
 
       
       
-        <div class="post-eof"></div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/24/Transformation/" rel="next" title="蜕变计划">
+                <i class="fa fa-chevron-left"></i> 蜕变计划
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
       
     </footer>
   </div>
@@ -520,10 +394,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -531,6 +406,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -745,6 +624,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
