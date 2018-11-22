@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="JavaScript," />
 
 
 
@@ -79,16 +79,18 @@
 
 
 
-<meta name="description" content="记录生活,记录编程学习">
-<meta property="og:type" content="website">
-<meta property="og:title" content="San&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="SPA初步了解SPA(single page web application)单页web应用,这样设计的主要意义:  前后端的分离 减轻服务器的压力 增强用户体验 Prerender预渲染优化SEO  前端路由的两种主流方法的实现原理:1、History API;2、Hash； H5新增的History API重点是history.pushState()和history.reoplaceState">
+<meta name="keywords" content="JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spa相关知识">
+<meta property="og:url" content="http://yoursite.com/2018/11/22/spa相关知识/index.html">
 <meta property="og:site_name" content="San&#39;s Blog">
-<meta property="og:description" content="记录生活,记录编程学习">
+<meta property="og:description" content="SPA初步了解SPA(single page web application)单页web应用,这样设计的主要意义:  前后端的分离 减轻服务器的压力 增强用户体验 Prerender预渲染优化SEO  前端路由的两种主流方法的实现原理:1、History API;2、Hash； H5新增的History API重点是history.pushState()和history.reoplaceState">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-22T15:22:40.434Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="San&#39;s Blog">
-<meta name="twitter:description" content="记录生活,记录编程学习">
+<meta name="twitter:title" content="spa相关知识">
+<meta name="twitter:description" content="SPA初步了解SPA(single page web application)单页web应用,这样设计的主要意义:  前后端的分离 减轻服务器的压力 增强用户体验 Prerender预渲染优化SEO  前端路由的两种主流方法的实现原理:1、History API;2、Hash； H5新增的History API重点是history.pushState()和history.reoplaceState">
 
 
 
@@ -118,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/11/22/spa相关知识/"/>
 
 
 
 
 
-  <title>San's Blog</title>
+  <title>spa相关知识 | San's Blog</title>
   
 
 
@@ -143,8 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -247,9 +248,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -279,9 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/22/spa相关知识/" itemprop="url">spa相关知识</a></h1>
+          <h1 class="post-title" itemprop="name headline">spa相关知识</h1>
         
 
         <div class="post-meta">
@@ -353,26 +352,29 @@
       
 
       
-        
-          
-          SPA初步了解SPA(single page web application)单页web应用,这样设计的主要意义:
+        <h5 id="SPA初步了解"><a href="#SPA初步了解" class="headerlink" title="SPA初步了解"></a>SPA初步了解</h5><p>SPA(single page web application)单页web应用,这样设计的主要意义:</p>
+<ul>
+<li>前后端的分离</li>
+<li>减轻服务器的压力</li>
+<li>增强用户体验</li>
+<li>Prerender预渲染优化SEO</li>
+</ul>
+<p>前端路由的两种主流方法的实现原理:1、History API;2、Hash；</p>
+<h5 id="H5新增的History-API"><a href="#H5新增的History-API" class="headerlink" title="H5新增的History API"></a>H5新增的History API</h5><p><em>重点是history.pushState()和history.reoplaceState()这两个API</em></p>
+<p>两个API都接收三个参数,分别是：</p>
+<ul>
+<li>状态对象（state object）：一个javascript对象，与用pushState()方法创建的心里是记录条目关联。无论何时用户导航道新创建的状态，popstate事件都会被触发，并且事件对象的state属性都包含历史记录条目的状态对象的拷贝。</li>
+<li>标题（title） firefox浏览器目前会忽略该参数，考虑道未来可能会对该方法进行修改，传入一个空字符串比较安全，或者可以传入一个简短的标题，表明将要进入的状态。</li>
+<li>地址（URL） 新的历史记录条目的地址，浏览器不会在调用pushState()方法后加载该地址，但之后，可能会试图加载，例如用户重启浏览器，新的URL不一定是绝对路径；如果是相对路由，他将以当前的URL为基准，传入的URL与当前的URL是同源的，否则pushState()会抛出异常。该参数的可选的；</li>
+</ul>
+<p><em>相同之处是都会操作浏览器的历史记录,而不会引起浏览器页面的刷新；不同之处在于：pushState会增加一条新的历史记录，而replaceState则会替换但前的历史记录</em></p>
+<h5 id="URL的Hash"><a href="#URL的Hash" class="headerlink" title="URL的Hash"></a>URL的Hash</h5><p>在h5还没有流行开来之前，spa一般都采用URL的hash()作为锚点，获取到#后的值，并监听其改变，在进行渲染对应的子页面，</p>
+<blockquote>
+<p>eg: 地址为：<a href="http://localhost:8888/#/abc,那么利用localtion.hash输出内容就为#/abc。" target="_blank" rel="noopener">http://localhost:8888/#/abc,那么利用localtion.hash输出内容就为#/abc。</a></p>
+</blockquote>
+<p>window对象中有一个事件是专门监听hash的变化，onhashchange，首先我们需要监听此事件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h1 id=<span class="string">"id"</span>&gt;&lt;/h1&gt;</span><br><span class="line">    &lt;a href=<span class="string">"#/id1"</span>&gt;&lt;/a&gt;</span><br><span class="line">    &lt;a href=<span class="string">"#/id2"</span>&gt;&lt;/a&gt;</span><br><span class="line">    &lt;a href=<span class="string">"#/id3"</span>&gt;&lt;/a&gt;</span><br><span class="line">&lt;<span class="regexp">/body&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;script&gt;</span></span><br><span class="line"><span class="regexp">    window.addEventListener('hashchange', e=&gt;&#123;</span></span><br><span class="line"><span class="regexp">        e.preventDefault();</span></span><br><span class="line"><span class="regexp">        socument.querySelector('#id').innerHTML = localtion.hash</span></span><br><span class="line"><span class="regexp">    &#125;)</span></span><br><span class="line"><span class="regexp">&lt;/</span>script&gt;</span><br></pre></td></tr></table></figure>
 
-前后端的分离
-减轻服务器的压力
-增强用户体验
-Prerender预渲染优化SEO
-
-前端路由的两种主流方法的实现原理:1、History API;2、Hash；
-H5新增的Histo
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/11/22/spa相关知识/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
       
     </div>
     
@@ -387,315 +389,36 @@ H5新增的Histo
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/30/destructuring-assignment/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="SanHaoXian">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="San's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/30/destructuring-assignment/" itemprop="url">destructuring_assignment</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-30T23:12:05+08:00">
-                2018-10-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/摘抄-笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">摘抄&笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
+            <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
           
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
+      
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+      
       
       
 
       
-        
-          
-          变量的解构赋值解构赋值的相关语法不做累赘的复述,详细查询阮老师的ES6入门;这里记录一些常用的代码块,以便后期尝试去使用;
-
-数组12345678910var a = 1, b = 2, c = 3;var [a, b, c] = [1, 2, 3];console.log(a,b,c);var [
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/30/destructuring-assignment/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/30/destructuring-assignment/" rel="next" title="destructuring_assignment">
+                <i class="fa fa-chevron-left"></i> destructuring_assignment
+              </a>
+            
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
 
-    
+          <span class="post-nav-divider"></span>
 
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/01/this显式绑定/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="SanHaoXian">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="San's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/01/this显式绑定/" itemprop="url">this显式绑定</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+          <div class="post-nav-prev post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-01T23:14:24+08:00">
-                2018-06-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/摘抄-笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">摘抄&笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-          This 显式绑定硬绑定
-显式绑定解决,想要在某个函数上强制调用某个函数.
-
- JavaScript提供绝大多数函数以及你自己的创建的所有函数,都可以使用call()和apply()方法;他们的第一个参数是一个对象,是给this准备的,接着在调用函数时,将其绑定到this,因为你可以直接指定this
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/06/01/this显式绑定/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -705,161 +428,11 @@ H5新增的Histo
   </article>
 
 
-    
-      
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/27/Loops-and-closures/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="SanHaoXian">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="San's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/27/Loops-and-closures/" itemprop="url">Loops and closures</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-27T22:17:22+08:00">
-                2018-05-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/摘抄-笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">摘抄&笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-闭包定义: 当函数可以记住并访问所在的词法作用域时,就产生了闭包,即使函数是在当前词法作用域之外执行.
-
-说明闭包,for循环是最常见的例子:12345for(var i=1; i&lt;=5; i++)&#123;	setTimeout( function timer()&#123;		cons
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/05/27/Loops-and-closures/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+    <div class="post-spread">
       
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
 
 
           </div>
@@ -867,6 +440,10 @@ H5新增的Histo
 
 
           
+
+  
+
+
 
         </div>
         
@@ -887,8 +464,17 @@ H5新增的Histo
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -948,6 +534,22 @@ H5新增的Histo
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#SPA初步了解"><span class="nav-number">1.</span> <span class="nav-text">SPA初步了解</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#H5新增的History-API"><span class="nav-number">2.</span> <span class="nav-text">H5新增的History API</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#URL的Hash"><span class="nav-number">3.</span> <span class="nav-text">URL的Hash</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1081,6 +683,10 @@ H5新增的Histo
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
