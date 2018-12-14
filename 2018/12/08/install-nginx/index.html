@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Webpack," />
+  <meta name="keywords" content="nginx," />
 
 
 
@@ -79,18 +79,21 @@
 
 
 
-<meta name="description" content="Issue 1webpack加载vue组件时，运行报错：[vue warn] You are using the runtime-only build of Vue where the template compiler is no 原因Resolvent在webpack的配置文件中加入：12345resolve: &amp;#123;    alias: &amp;#123;        vue: &apos;vue/">
-<meta name="keywords" content="Webpack">
+<meta name="description" content="今天双休有时间刚好玩玩树莓派，前几周在树莓派上跑了个gogs服务器,加上花生壳内网穿透感觉很不错，所以继续动手在树莓派上面跑一个web服务器。在此记录一下安装的过程，以及遇到的一些问题是怎么解决的 之所以选择nginx就是听说比较轻量级的，毕竟菜鸟我还没用过，想要动手先搭建起来，在过程中学习，后续可以继续深入地了解… 话不多说，相关知识自行查阅，直接上步骤：  第一步安装Nginx:1sudo a">
+<meta name="keywords" content="nginx">
 <meta property="og:type" content="article">
-<meta property="og:title" content="webpack加载vue时遇到的问题">
-<meta property="og:url" content="http://yoursite.com/2018/11/30/webpack加载vue时遇到的问题/index.html">
+<meta property="og:title" content="树莓派+nginx+php7.0+sqlite安装经历">
+<meta property="og:url" content="http://yoursite.com/2018/12/08/install-nginx/index.html">
 <meta property="og:site_name" content="San&#39;s Blog">
-<meta property="og:description" content="Issue 1webpack加载vue组件时，运行报错：[vue warn] You are using the runtime-only build of Vue where the template compiler is no 原因Resolvent在webpack的配置文件中加入：12345resolve: &amp;#123;    alias: &amp;#123;        vue: &apos;vue/">
+<meta property="og:description" content="今天双休有时间刚好玩玩树莓派，前几周在树莓派上跑了个gogs服务器,加上花生壳内网穿透感觉很不错，所以继续动手在树莓派上面跑一个web服务器。在此记录一下安装的过程，以及遇到的一些问题是怎么解决的 之所以选择nginx就是听说比较轻量级的，毕竟菜鸟我还没用过，想要动手先搭建起来，在过程中学习，后续可以继续深入地了解… 话不多说，相关知识自行查阅，直接上步骤：  第一步安装Nginx:1sudo a">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-30T15:24:45.355Z">
+<meta property="og:image" content="http://yoursite.com/images/nginx_success.png">
+<meta property="og:image" content="http://yoursite.com/images/nginx_success.png">
+<meta property="og:updated_time" content="2018-12-14T15:08:18.511Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="webpack加载vue时遇到的问题">
-<meta name="twitter:description" content="Issue 1webpack加载vue组件时，运行报错：[vue warn] You are using the runtime-only build of Vue where the template compiler is no 原因Resolvent在webpack的配置文件中加入：12345resolve: &amp;#123;    alias: &amp;#123;        vue: &apos;vue/">
+<meta name="twitter:title" content="树莓派+nginx+php7.0+sqlite安装经历">
+<meta name="twitter:description" content="今天双休有时间刚好玩玩树莓派，前几周在树莓派上跑了个gogs服务器,加上花生壳内网穿透感觉很不错，所以继续动手在树莓派上面跑一个web服务器。在此记录一下安装的过程，以及遇到的一些问题是怎么解决的 之所以选择nginx就是听说比较轻量级的，毕竟菜鸟我还没用过，想要动手先搭建起来，在过程中学习，后续可以继续深入地了解… 话不多说，相关知识自行查阅，直接上步骤：  第一步安装Nginx:1sudo a">
+<meta name="twitter:image" content="http://yoursite.com/images/nginx_success.png">
 
 
 
@@ -120,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/11/30/webpack加载vue时遇到的问题/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/12/08/install-nginx/"/>
 
 
 
 
 
-  <title>webpack加载vue时遇到的问题 | San's Blog</title>
+  <title>树莓派+nginx+php7.0+sqlite安装经历 | San's Blog</title>
   
 
 
@@ -263,7 +266,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/30/webpack加载vue时遇到的问题/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/08/install-nginx/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="SanHaoXian">
@@ -280,7 +283,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">webpack加载vue时遇到的问题</h1>
+          <h1 class="post-title" itemprop="name headline">树莓派+nginx+php7.0+sqlite安装经历</h1>
         
 
         <div class="post-meta">
@@ -292,8 +295,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-30T22:50:23+08:00">
-                2018-11-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T21:39:31+08:00">
+                2018-12-08
               </time>
             
 
@@ -315,8 +318,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/摘抄-笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">摘抄&笔记</span>
+                  <a href="/categories/记录/" itemprop="url" rel="index">
+                    <span itemprop="name">记录</span>
                   </a>
                 </span>
 
@@ -352,11 +355,38 @@
       
 
       
-        <h5 id="Issue-1"><a href="#Issue-1" class="headerlink" title="Issue 1"></a>Issue 1</h5><p>webpack加载vue组件时，运行报错：<br>[vue warn] You are using the runtime-only build of Vue where the template compiler is no</p>
-<h6 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h6><h6 id="Resolvent"><a href="#Resolvent" class="headerlink" title="Resolvent"></a>Resolvent</h6><p>在webpack的配置文件中加入：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">resolve: &#123;</span><br><span class="line">    alias: &#123;</span><br><span class="line">        vue: <span class="string">'vue/dist/vue.js'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="Issue-2"><a href="#Issue-2" class="headerlink" title="Issue 2"></a>Issue 2</h5><p>Unknown custom element: <router-view>[Vue warn]: Unknown custom element: <router-view> - did you register the component correctly? For recursive components, make sure to provide the “name” option.<br>(found in component <app> at /Users/awilhelm/dev/CoPilot/src/components/App.vue)</app></router-view></router-view></p>
-<h6 id="原因-1"><a href="#原因-1" class="headerlink" title="原因"></a>原因</h6><p>没有正确引用到vue-router导致的，我自己明明写好了，但是没有生效，我决定删掉这两行，然后再次复写，发现居然没有问题了…难道是vscode的缓存问题？？？</p>
-<h6 id="Resolvent-1"><a href="#Resolvent-1" class="headerlink" title="Resolvent"></a>Resolvent</h6><p>在配置路由文件中：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span>;</span><br><span class="line"><span class="keyword">import</span> Router <span class="keyword">from</span> <span class="string">'vue-router'</span>;</span><br><span class="line"></span><br><span class="line">Vue.use(Router);</span><br></pre></td></tr></table></figure></p>
+        <p>今天双休有时间刚好玩玩树莓派，前几周在树莓派上跑了个gogs服务器,加上花生壳内网穿透感觉很不错，所以继续动手在树莓派上面跑一个web服务器。在此记录一下安装的过程，以及遇到的一些问题是怎么解决的</p>
+<p>之所以选择nginx就是听说比较轻量级的，毕竟菜鸟我还没用过，想要动手先搭建起来，在过程中学习，后续可以继续深入地了解…</p>
+<p>话不多说，相关知识自行查阅，直接上步骤：</p>
+<ol>
+<li>第一步安装Nginx:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nginx</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这个安装没毛病，顺利跑完！</p>
+<ol start="2">
+<li>第二步安装php+sqlite:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install php5-fpm sqlite</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这里就出问题了（内心OS:#@%#%$^%^%&amp;^*&amp;^…..）;才第二步按照教程就卡掉了，网上咋都这样说呢？<br>查看一下报错：大概意思就是没有找到php5-fpm的包，提示可能源的问题，或者没有这个包；<br>于是我就换树莓派的源咯，本想换中科大后来换了阿里云的，然后满怀期待地再次敲下以上命令，依旧是报同样的错误（……%&amp;×&amp;%%……#￥……&amp;！）<br>后来查询一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-cache search php</span><br></pre></td></tr></table></figure></p>
+<p>发现并没有php5的包，只有php7.0的包，我才估计是下架了吧？？？干脆直接安装php7.0-fpm，嘿还真的可以了。</p>
+<ol start="3">
+<li>第三步配置nginx:<br>打开目标文件：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/nginx/sites-available/default</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>修改文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">localtion / &#123;</span><br><span class="line">    index index.php index.html index.htm index.nginx-debian.html</span><br><span class="line">&#125;</span><br><span class="line">localtion ~ \.php$&#123;</span><br><span class="line">    fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;</span><br><span class="line">    fastcgi_index index.php;</span><br><span class="line">    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</span><br><span class="line">    inclue fastcgi_params;</span><br><span class="line">&#125;</span><br><span class="line">localtion ~ \.sqlite$ &#123;</span><br><span class="line">    deny all;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>终于配置完成，简称奇迹的时刻；</p>
+<ol start="4">
+<li>第四步重启服务：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service nginx restart</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>如果在浏览器中输入本地IP能够访问到如下界面，那恭喜你搭建成功；但是我就没有那么幸运啦，没能一次搭建成功，</p>
+<p><img src="/images/nginx_success.png" alt="抱歉没加载成功"></p>
+<p>没错！我又报错了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Job for nginx.service failed because the control process exited with error code. </span><br><span class="line">Job for nginx.service failed because the control process exited with error code. </span><br><span class="line">See &quot;systemctl status nginx.service&quot; and &quot;journal</span><br></pre></td></tr></table></figure></p>
+<p>意思是让输入：systemctl status nginx.service 查看详情；<br>结果没也没出个什么问题，真是头疼，没有方向怎么解决这个问题？<br>大致猜想就是配置文件的问题，可是有什么问题呢？？</p>
+<p>重点来了：百毒一搜，发现一个很厉害的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -t</span><br></pre></td></tr></table></figure></p>
+<p>这行命令直接校验你的Nginx配置是否成功：<br>行它会输出一个successful,不行还会指出错误；是不是很神奇很惊喜？？<br>立马尝试发现我的问题，有基础“;”没有写的问题，好像必须写上;号，还有一个“}”的问题；解决之后，</p>
+<p>完美重启！！！</p>
+<p><img src="/images/nginx_success.png" alt="抱歉没加载成功"></p>
 
       
     </div>
@@ -374,7 +404,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Webpack/" rel="tag"># Webpack</a>
+            <a href="/tags/nginx/" rel="tag"># nginx</a>
           
         </div>
       
@@ -387,8 +417,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/27/if-else-and-switch/" rel="next" title="if-else and switch">
-                <i class="fa fa-chevron-left"></i> if-else and switch
+              <a href="/2018/11/30/webpack加载vue时遇到的问题/" rel="next" title="webpack加载vue时遇到的问题">
+                <i class="fa fa-chevron-left"></i> webpack加载vue时遇到的问题
               </a>
             
           </div>
@@ -396,10 +426,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/08/install-nginx/" rel="prev" title="树莓派+nginx+php7.0+sqlite安装经历">
-                树莓派+nginx+php7.0+sqlite安装经历 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -451,17 +477,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -521,22 +538,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#Issue-1"><span class="nav-number">1.</span> <span class="nav-text">Issue 1</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#原因"><span class="nav-number">1.1.</span> <span class="nav-text">原因</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Resolvent"><span class="nav-number">1.2.</span> <span class="nav-text">Resolvent</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Issue-2"><span class="nav-number">2.</span> <span class="nav-text">Issue 2</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#原因-1"><span class="nav-number">2.1.</span> <span class="nav-text">原因</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Resolvent-1"><span class="nav-number">2.2.</span> <span class="nav-text">Resolvent</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
