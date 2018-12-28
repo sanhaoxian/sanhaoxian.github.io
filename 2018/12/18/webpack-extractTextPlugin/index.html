@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="webpack-extractTextPlugin相关概念，传送门 这个插件的作用大概就是：它会将所有的入口 chunk(entry chunks)中引用的 *.css，移动到独立分离的 CSS 文件。因此，你的样式将不再内嵌到 JS bundle 中，而是会放到一个单独的 CSS 文件（即 styles.css）当中。简单一点说就是用来分离css的。 问题描述： 在下午使用vue-cli打包项目">
+<meta name="description" content="extract-text-webpack-plugin插件webpack-extractTextPlugin相关概念，传送门 这个插件的作用大概就是：它会将所有的入口 chunk(entry chunks)中引用的 *.css，移动到独立分离的 CSS 文件。因此，你的样式将不再内嵌到 JS bundle 中，而是会放到一个单独的 CSS 文件（即 styles.css）当中。简单一点说就是用来分">
 <meta name="keywords" content="Webpack">
 <meta property="og:type" content="article">
 <meta property="og:title" content="webpack中extractTextPlugin插件问题">
 <meta property="og:url" content="http://yoursite.com/2018/12/18/webpack-extractTextPlugin/index.html">
 <meta property="og:site_name" content="San&#39;s Blog">
-<meta property="og:description" content="webpack-extractTextPlugin相关概念，传送门 这个插件的作用大概就是：它会将所有的入口 chunk(entry chunks)中引用的 *.css，移动到独立分离的 CSS 文件。因此，你的样式将不再内嵌到 JS bundle 中，而是会放到一个单独的 CSS 文件（即 styles.css）当中。简单一点说就是用来分离css的。 问题描述： 在下午使用vue-cli打包项目">
+<meta property="og:description" content="extract-text-webpack-plugin插件webpack-extractTextPlugin相关概念，传送门 这个插件的作用大概就是：它会将所有的入口 chunk(entry chunks)中引用的 *.css，移动到独立分离的 CSS 文件。因此，你的样式将不再内嵌到 JS bundle 中，而是会放到一个单独的 CSS 文件（即 styles.css）当中。简单一点说就是用来分">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-19T15:31:00.767Z">
+<meta property="og:updated_time" content="2018-12-26T16:07:38.505Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="webpack中extractTextPlugin插件问题">
-<meta name="twitter:description" content="webpack-extractTextPlugin相关概念，传送门 这个插件的作用大概就是：它会将所有的入口 chunk(entry chunks)中引用的 *.css，移动到独立分离的 CSS 文件。因此，你的样式将不再内嵌到 JS bundle 中，而是会放到一个单独的 CSS 文件（即 styles.css）当中。简单一点说就是用来分离css的。 问题描述： 在下午使用vue-cli打包项目">
+<meta name="twitter:description" content="extract-text-webpack-plugin插件webpack-extractTextPlugin相关概念，传送门 这个插件的作用大概就是：它会将所有的入口 chunk(entry chunks)中引用的 *.css，移动到独立分离的 CSS 文件。因此，你的样式将不再内嵌到 JS bundle 中，而是会放到一个单独的 CSS 文件（即 styles.css）当中。简单一点说就是用来分">
 
 
 
@@ -357,13 +357,18 @@
       
 
       
-        <p>webpack-extractTextPlugin相关概念，<a href="https://webpack.js.org/plugins/extract-text-webpack-plugin/#src/components/Sidebar/Sidebar.jsx" target="_blank" rel="noopener">传送门</a></p>
+        <p><strong>extract-text-webpack-plugin插件</strong><br>webpack-extractTextPlugin相关概念，<a href="https://webpack.js.org/plugins/extract-text-webpack-plugin/#src/components/Sidebar/Sidebar.jsx" target="_blank" rel="noopener">传送门</a></p>
 <p>这个插件的作用大概就是：它会将所有的入口 chunk(entry chunks)中引用的 *.css，移动到独立分离的 CSS 文件。因此，你的样式将不再内嵌到 JS bundle 中，而是会放到一个单独的 CSS 文件（即 styles.css）当中。<strong><em>简单一点说就是用来分离css的。</em></strong></p>
 <p>问题描述： 在下午使用vue-cli打包项目构成中，遇到bootstrap的字体文件无法显示，同时通过后台查看发现，字体文件的请求路径发生错误，访问的是不存在的地址；</p>
 <p>原因(个人理解，不知道准不准确)：在利用webpack构建工具的时候，css默认是在css处在的static目录作为根目录，而当在.css文件中引入font字体文件的时候默认是以css下为根目录去请求，所以后台会出现：<br><em>/static/css/static/font/xxxxxx.xxx</em></p>
 <p>解决方法：在相应的webpack配置中，找到css相关的配置。找到extractTextPlugin;<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ExtractTextPlugin.extract(&#123;</span><br><span class="line">    fallback: <span class="string">'xxx'</span>,</span><br><span class="line">    use: <span class="string">'xxx'</span>,</span><br><span class="line">    publicPath: <span class="string">'../../'</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
 <p>设置publicPath: ‘../../‘后，字体文件能够正确请求路径了！</p>
-<p>慢慢搜索，弄懂这个插件究竟是干什么的，相应的就要学习很多大牛刨祖坟式的去思考问题：<br>问题一: webpack是如何打包css的？<br>问题二：webpack打包css方式有什么不同？</p>
+<p>慢慢搜索，弄懂这个插件究竟是干什么的，相应的就要学习很多大牛刨祖坟式的去思考问题：<br>问题一: webpack是处理打包css的？<br>问题二：webpack打包css方式有什么不同？</p>
+<p>webpack本身不对css进行处理，而是利用loader对css或者相应的css预处理的sass等进行处理；</p>
+<p>一下就是webpack处理css方式，一般是结合使用：<br>style-loader：将模块的导出作为样式添加到 DOM 中<br>css-loader： 解析 CSS 文件后，使用 import 加载，并且返回 CSS 代码</p>
+<p>那么webpack就要通过相应的loader去处理css啦，常用的有style-loader、css-loader；通过配置不同的loader处理不同的css文件，在这里需要注意的一点是：使用loader是需要注意书写顺序的，webpack默认是从右到左逐个loader使用，所以处理顺序有先后之分，loader不能乱放，例如使用sass,那么使用就是：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">use: process.env.NODE_ENV === <span class="string">"development"</span> ? [<span class="string">"style-loader"</span>, <span class="string">"css-loader"</span>, <span class="string">"sass-loader"</span>, <span class="string">"postcss-loader"</span>] : extractTextPlugin.extract(&#123;</span><br><span class="line">    fallback: <span class="string">"style-loader"</span>,</span><br><span class="line">    use: [<span class="string">"css-loader"</span>, <span class="string">"sass-loader"</span>, <span class="string">"postcss-loader"</span>],</span><br><span class="line">    <span class="comment">// css中的基础路径</span></span><br><span class="line">    publicPath: <span class="string">"../"</span></span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>那么我个人立即webpack对css的处理是：显示利用相关插件对css进行提取、分离什么的，然后通过相应的loader规则将css资源转换成JavaScript模块，然后嵌入模板文件中的style中，最终生效渲染；<br>可以使用提取css的及合成一个css文件插件，当然也可以不使用，依照项目需求吧；</p>
+<p>除此之外还有一个purifycss-webpack插件，用于消除冗余的css代码，结合上述的插件进行处理</p>
 
       
     </div>
@@ -474,7 +479,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -485,7 +490,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -496,7 +501,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
