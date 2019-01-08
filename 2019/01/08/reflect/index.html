@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="JavaScript," />
+  <meta name="keywords" content="something," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="SPA初步了解SPA(single page web application)单页web应用,这样设计的主要意义:  前后端的分离 减轻服务器的压力 增强用户体验 Prerender预渲染优化SEO  前端路由的两种主流方法的实现原理:1、History API;2、Hash； H5新增的History API重点是history.pushState()和history.reoplaceState">
-<meta name="keywords" content="JavaScript">
+<meta name="description" content="故事要从2017年7月开始说起…咳咳，刚开始使用Vue,我是从网上教程，利用vue-cli开始搭建项目，然后开始的vue的开发旅程；相信不少部分的初学者都是利用vue-cli构建自己的vue项目的，但是两个两个星期后，来了一个新同事，他一来也是利用cli,我发现构建出来的项目目录不一样，发现他的项目自带有vue-router，我感觉有点方，当初也不知道为什么不一样，难道vue版本更新了？而且还那么">
+<meta name="keywords" content="something">
 <meta property="og:type" content="article">
-<meta property="og:title" content="spa相关知识">
-<meta property="og:url" content="http://yoursite.com/2018/11/22/spa相关知识/index.html">
+<meta property="og:title" content="在开发过程中的一些反思">
+<meta property="og:url" content="http://yoursite.com/2019/01/08/reflect/index.html">
 <meta property="og:site_name" content="San&#39;s Blog">
-<meta property="og:description" content="SPA初步了解SPA(single page web application)单页web应用,这样设计的主要意义:  前后端的分离 减轻服务器的压力 增强用户体验 Prerender预渲染优化SEO  前端路由的两种主流方法的实现原理:1、History API;2、Hash； H5新增的History API重点是history.pushState()和history.reoplaceState">
+<meta property="og:description" content="故事要从2017年7月开始说起…咳咳，刚开始使用Vue,我是从网上教程，利用vue-cli开始搭建项目，然后开始的vue的开发旅程；相信不少部分的初学者都是利用vue-cli构建自己的vue项目的，但是两个两个星期后，来了一个新同事，他一来也是利用cli,我发现构建出来的项目目录不一样，发现他的项目自带有vue-router，我感觉有点方，当初也不知道为什么不一样，难道vue版本更新了？而且还那么">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-19T15:29:50.691Z">
+<meta property="og:updated_time" content="2019-01-08T16:11:27.976Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="spa相关知识">
-<meta name="twitter:description" content="SPA初步了解SPA(single page web application)单页web应用,这样设计的主要意义:  前后端的分离 减轻服务器的压力 增强用户体验 Prerender预渲染优化SEO  前端路由的两种主流方法的实现原理:1、History API;2、Hash； H5新增的History API重点是history.pushState()和history.reoplaceState">
+<meta name="twitter:title" content="在开发过程中的一些反思">
+<meta name="twitter:description" content="故事要从2017年7月开始说起…咳咳，刚开始使用Vue,我是从网上教程，利用vue-cli开始搭建项目，然后开始的vue的开发旅程；相信不少部分的初学者都是利用vue-cli构建自己的vue项目的，但是两个两个星期后，来了一个新同事，他一来也是利用cli,我发现构建出来的项目目录不一样，发现他的项目自带有vue-router，我感觉有点方，当初也不知道为什么不一样，难道vue版本更新了？而且还那么">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/11/22/spa相关知识/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/01/08/reflect/"/>
 
 
 
 
 
-  <title>spa相关知识 | San's Blog</title>
+  <title>在开发过程中的一些反思 | San's Blog</title>
   
 
 
@@ -263,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/22/spa相关知识/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/08/reflect/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="SanHaoXian">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">spa相关知识</h1>
+          <h1 class="post-title" itemprop="name headline">在开发过程中的一些反思</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-22T22:20:38+08:00">
-                2018-11-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-08T23:30:01+08:00">
+                2019-01-08
               </time>
             
 
@@ -315,8 +315,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Excerpt-Note/" itemprop="url" rel="index">
-                    <span itemprop="name">Excerpt&Note</span>
+                  <a href="/categories/Miscellany/" itemprop="url" rel="index">
+                    <span itemprop="name">Miscellany</span>
                   </a>
                 </span>
 
@@ -357,28 +357,17 @@
       
 
       
-        <h5 id="SPA初步了解"><a href="#SPA初步了解" class="headerlink" title="SPA初步了解"></a>SPA初步了解</h5><p>SPA(single page web application)单页web应用,这样设计的主要意义:</p>
-<ul>
-<li>前后端的分离</li>
-<li>减轻服务器的压力</li>
-<li>增强用户体验</li>
-<li>Prerender预渲染优化SEO</li>
-</ul>
-<p>前端路由的两种主流方法的实现原理:1、History API;2、Hash；</p>
-<h5 id="H5新增的History-API"><a href="#H5新增的History-API" class="headerlink" title="H5新增的History API"></a>H5新增的History API</h5><p><em>重点是history.pushState()和history.reoplaceState()这两个API</em></p>
-<p>两个API都接收三个参数,分别是：</p>
-<ul>
-<li>状态对象（state object）：一个javascript对象，与用pushState()方法创建的心里是记录条目关联。无论何时用户导航道新创建的状态，popstate事件都会被触发，并且事件对象的state属性都包含历史记录条目的状态对象的拷贝。</li>
-<li>标题（title） firefox浏览器目前会忽略该参数，考虑道未来可能会对该方法进行修改，传入一个空字符串比较安全，或者可以传入一个简短的标题，表明将要进入的状态。</li>
-<li>地址（URL） 新的历史记录条目的地址，浏览器不会在调用pushState()方法后加载该地址，但之后，可能会试图加载，例如用户重启浏览器，新的URL不一定是绝对路径；如果是相对路由，他将以当前的URL为基准，传入的URL与当前的URL是同源的，否则pushState()会抛出异常。该参数的可选的；</li>
-</ul>
-<p><em>相同之处是都会操作浏览器的历史记录,而不会引起浏览器页面的刷新；不同之处在于：pushState会增加一条新的历史记录，而replaceState则会替换但前的历史记录</em></p>
-<h5 id="URL的Hash"><a href="#URL的Hash" class="headerlink" title="URL的Hash"></a>URL的Hash</h5><p>在h5还没有流行开来之前，spa一般都采用URL的hash()作为锚点，获取到#后的值，并监听其改变，在进行渲染对应的子页面，</p>
-<blockquote>
-<p>eg: 地址为：<a href="http://localhost:8888/#/abc,那么利用localtion.hash输出内容就为#/abc。" target="_blank" rel="noopener">http://localhost:8888/#/abc,那么利用localtion.hash输出内容就为#/abc。</a></p>
-</blockquote>
-<p>window对象中有一个事件是专门监听hash的变化，onhashchange，首先我们需要监听此事件</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h1 id=<span class="string">"id"</span>&gt;&lt;/h1&gt;</span><br><span class="line">    &lt;a href=<span class="string">"#/id1"</span>&gt;&lt;/a&gt;</span><br><span class="line">    &lt;a href=<span class="string">"#/id2"</span>&gt;&lt;/a&gt;</span><br><span class="line">    &lt;a href=<span class="string">"#/id3"</span>&gt;&lt;/a&gt;</span><br><span class="line">&lt;<span class="regexp">/body&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;script&gt;</span></span><br><span class="line"><span class="regexp">    window.addEventListener('hashchange', e=&gt;&#123;</span></span><br><span class="line"><span class="regexp">        e.preventDefault();</span></span><br><span class="line"><span class="regexp">        socument.querySelector('#id').innerHTML = localtion.hash</span></span><br><span class="line"><span class="regexp">    &#125;)</span></span><br><span class="line"><span class="regexp">&lt;/</span>script&gt;</span><br></pre></td></tr></table></figure>
+        <p>故事要从2017年7月开始说起…咳咳，<br>刚开始使用Vue,我是从网上教程，利用vue-cli开始搭建项目，然后开始的vue的开发旅程；<br>相信不少部分的初学者都是利用vue-cli构建自己的vue项目的，但是两个两个星期后，来了一个新同事，他一来也是利用cli,我发现构建出来的项目目录不一样，发现他的项目自带有vue-router，我感觉有点方，当初也不知道为什么不一样，难道vue版本更新了？而且还那么快。当初也没多想，所以就没想太多。</p>
+<p>再后来就是不久前，发现vue-cli发布3.0，添加了许多自定义的配置，例如为了方便配置还增加了GUI界面。初始化一个项目也更加方便只要勾选需要的配置，即可生成。我自己搭建了一下，确实蛮好用的。但是在这里我又有些疑问了，写的vue-cli有了新的开发文档，而3.0以前的文档又是另外一份，这样给开发增加了学习成本，这仅仅是一个脚手架工具罢了，有充分的理由花费时间的琢磨么？</p>
+<p>所以我在想，高手应该都是脱离这些脚手架的束缚，当然我仅是菜鸟一枚，至少有一颗上进的心。我的重点应该学习vue的开发，这些脚手架不是重点。所以应该折腾一个自己的项目初始目录。这么想我也是这么做的；<a href="https://github.com/sanhaoxian/Template_webpack4.0_SPA" target="_blank" rel="noopener">传送门</a>,在跟随的大佬的脚步，我也可以自己搭建一个自己看的懂，会操作的项目目录。编写这个过程中，主要学会了两点：1. webpack基本配置以及使用； 2. vue项目的基础搭建使用，以及相关的知识；</p>
+<p>以上是脚手架的一些思考；还有一点就是在利用vue插件的问题，例如：初次利用是使用vue-resouce进行ajax请求的（现在vue不推荐使用的，改用axios）；<br>然后我就是拿来就用，一般网上教程就是：安装，引入，直接使用；我也就是这么做的；</p>
+<p>后来：</p>
+<ol>
+<li>vue-resource被抛弃了，改用axios; </li>
+<li>需要在每一个请求中加入token; </li>
+<li>需要在ajax中加入过滤，加入xss预防（利用拦截器）；</li>
+</ol>
+<p>我已经在好多页面中直接使用的ajax的方法，针对上述三个问题，我需要修改的话就是每一个请求都需要修改；（绝望）….<br>这样的问题就是不好管理，以及扩展之类的。所以解决方法就是将所有请求方法封装成一个全局方法api,后续的修改只需要修改这个全局方法即可，便于管理。今天刚好在自己的项目更新了这一点；</p>
 
       
     </div>
@@ -396,7 +385,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+            <a href="/tags/something/" rel="tag"># something</a>
           
         </div>
       
@@ -409,8 +398,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/10/30/destructuring-assignment/" rel="next" title="destructuring_assignment">
-                <i class="fa fa-chevron-left"></i> destructuring_assignment
+              <a href="/2019/01/03/threeJs03/" rel="next" title="day03 Learning threejs">
+                <i class="fa fa-chevron-left"></i> day03 Learning threejs
               </a>
             
           </div>
@@ -418,10 +407,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/11/27/if-else-and-switch/" rel="prev" title="if-else and switch">
-                if-else and switch <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -473,17 +458,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -543,22 +519,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#SPA初步了解"><span class="nav-number">1.</span> <span class="nav-text">SPA初步了解</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#H5新增的History-API"><span class="nav-number">2.</span> <span class="nav-text">H5新增的History API</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#URL的Hash"><span class="nav-number">3.</span> <span class="nav-text">URL的Hash</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
