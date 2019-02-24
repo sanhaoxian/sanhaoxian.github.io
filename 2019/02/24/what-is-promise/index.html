@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="translate," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="了解JavaScript中的PromiseGokul NK2018年7月16日原文链接 我先承诺，在这篇文章的最后，你会更好地了解JavaScript Promises。 我与JavaScript有一种“爱与恨”的关系。但是，JavaScript总是对我很有吸引力。在过去10年中，我一直致力于Java和PHP，但JavaScript看起来非常不同，但很有趣。我没有花足够的时间在JavaScript">
+<meta name="keywords" content="translate">
+<meta property="og:type" content="article">
+<meta property="og:title" content="译：了解JavaScript中的Promise">
+<meta property="og:url" content="http://yoursite.com/2019/02/24/what-is-promise/index.html">
+<meta property="og:site_name" content="San&#39;s Blog">
+<meta property="og:description" content="了解JavaScript中的PromiseGokul NK2018年7月16日原文链接 我先承诺，在这篇文章的最后，你会更好地了解JavaScript Promises。 我与JavaScript有一种“爱与恨”的关系。但是，JavaScript总是对我很有吸引力。在过去10年中，我一直致力于Java和PHP，但JavaScript看起来非常不同，但很有趣。我没有花足够的时间在JavaScript">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-02-24T15:38:33.427Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="译：了解JavaScript中的Promise">
+<meta name="twitter:description" content="了解JavaScript中的PromiseGokul NK2018年7月16日原文链接 我先承诺，在这篇文章的最后，你会更好地了解JavaScript Promises。 我与JavaScript有一种“爱与恨”的关系。但是，JavaScript总是对我很有吸引力。在过去10年中，我一直致力于Java和PHP，但JavaScript看起来非常不同，但很有趣。我没有花足够的时间在JavaScript">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/24/what-is-promise/"/>
+
+
+
+
+
+  <title>译：了解JavaScript中的Promise | San's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">San's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/24/what-is-promise/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SanHaoXian">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="San's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">译：了解JavaScript中的Promise</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-24T23:07:53+08:00">
+                2019-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Javascript/" itemprop="url" rel="index">
+                    <span itemprop="name">Javascript</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="了解JavaScript中的Promise"><a href="#了解JavaScript中的Promise" class="headerlink" title="了解JavaScript中的Promise"></a>了解JavaScript中的Promise</h2><p>Gokul NK<br>2018年7月16日<br><a href="https://hackernoon.com/understanding-promises-in-javascript-13d99df067c1" target="_blank" rel="noopener">原文链接</a></p>
+<p><em>我先承诺，在这篇文章的最后，你会更好地了解JavaScript Promises。</em></p>
+<p>我与JavaScript有一种“爱与恨”的关系。但是，JavaScript总是对我很有吸引力。在过去10年中，我一直致力于Java和PHP，但JavaScript看起来非常不同，但很有趣。我没有花足够的时间在JavaScript上并且一直在努力弥补它。</p>
+<p>Promises是我遇到的第一个有趣话题。我一次又一次地听到有人说Promises会让你免于回调地狱。虽然这可能是一个令人愉快的副作用，但Promise还有更多，这是我迄今为止能够弄清楚的。</p>
+<h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>当你第一次开始使用JavaScript时，它会有点令人沮丧。你会听到有些人说JavaScript是同步编程语言，而其他人则认为它是异步的。您会听到阻塞代码，非阻塞代码，事件驱动设计模式，事件生命周期，函数堆栈，事件队列，冒泡，polyfill，babel，angular，reactJS，vue JS以及大量其他工具和库。不要烦恼。你不是第一个。这也有一个术语。它被称为JavaScript疲劳。这条推文很好地捕获了它。</p>
+<p>如果您想了解有关JavaScript疲劳的更多详细信息，请查看以下文章。有一个原因，这篇文章在Hackernoon上获得了42k的鼓掌:) <a href="https://hackernoon.com/how-it-feels-to-learn-javascript-in-2016-d3a717dd577f" target="_blank" rel="noopener">2016年学习javascript的感觉</a></p>
+<p><strong>JavaScript是一种同步编程语言。但是由于回调函数，我们可以使它像异步编程语言一样运行。</strong></p>
+<h4 id="外行的Promise"><a href="#外行的Promise" class="headerlink" title="外行的Promise"></a>外行的Promise</h4><p>JavaScript中的Promise与您在现实生活中所做的Promise非常相似。首先让我们看看现实生活中的Promise。</p>
+<p>字典中的Promise定义如下</p>
+<p>Promise  ：名词：保证一个人会做某事或某个事情会发生。</p>
+<p>那么当有人向你许诺时会发生什么？</p>
+<p>Promise可以保证您可以完成某些事情。他们（谁做出Promise）是自己做的，还是由他人完成，这是无关紧要的。他们为您提供保证，您可以根据这些保证计划某些事情。<br>Promise可以保留或破坏。<br>当一个Promise被保留时，你会期待一些超出Promise的东西。您可以利用Promise的输出来进行进一步的行动或计划。<br>当一个Promise被打破时，你想知道为什么做出Promise的人无法跟上他的交易。一旦您知道原因并确认Promise已被破坏，您就可以计划下一步该做什么或如何处理它。<br>在做出Promise时，我们所拥有的只是一种保证。我们将无法立即采取行动。我们可以决定并制定在保留Promise（因此我们预期结果）或破坏时需要做什么（我们知道原因，因此我们可以计划应急）。<br>有可能你根本没有回复那个做出Promise的人。在这种情况下，您更愿意保持时间阈值。如果做出Promise的人在10天内没有回复我，我会认为他有一些问题而且不会履行诺言。所以，即使这个人在15天后回到你身边，你也不再重要了，因为你已经制定了替代计划。</p>
+<h3 id="JavaScript中的Promise"><a href="#JavaScript中的Promise" class="headerlink" title="JavaScript中的Promise"></a>JavaScript中的Promise</h3><p>根据经验，对于JavaScript，我总是阅读MDN Web Docs的文档。在所有资源中，我认为它们提供了最简洁的细节。我从MDSN Web Docs中读取了Promises页面，并使用代码来解决它。</p>
+<p>理解Promise有两个部分。Promise的制定和Promise的处理。虽然我们的大多数代码通常都会满足其他图书馆创建的Promise的处理，但完整的理解将对我们有所帮助。一旦你跨过初学者阶段，理解“创造Promise”同样重要。</p>
+<h4 id="创造Promise"><a href="#创造Promise" class="headerlink" title="创造Promise"></a>创造Promise</h4><p>让我们看看创建新Promise的签名。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>( <span class="comment">/* executor */</span> <span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123; ... &#125; );</span><br></pre></td></tr></table></figure></p>
+<p>构造函数接受一个名为executor的函数。此executor函数接受两个参数resolve，reject然后依次为函数。Promise通常用于更容易处理异步操作或阻塞代码，其示例包括文件操作，API调用，DB调用，IO调用等。这些异步操作的启动发生在executor函数内。如果异步操作成功，则resolve通过promise的创建者调用该函数来返回预期结果。同样，如果出现意外错误，则通过调用reject函数传递原因。</p>
+<p>现在我们知道如何创建一个Promise。让我们为我们的理解创造一个简单的Promise。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> keepsHisWord; </span><br><span class="line">keepsHisWord = <span class="literal">true</span>; </span><br><span class="line">promise1 = <span class="keyword">new</span> <span class="built_in">Promise</span>（<span class="function"><span class="keyword">function</span>（<span class="title">resolve</span>，<span class="title">reject</span>）</span>&#123; </span><br><span class="line">  <span class="keyword">if</span>（keepsHisWord）&#123; </span><br><span class="line">    resolve（“男人喜欢保守他的话”）; </span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; </span><br><span class="line">    reject（“男人不想保守他的话”）; </span><br><span class="line">  &#125; </span><br><span class="line">&#125;） ; </span><br><span class="line"><span class="built_in">console</span>.log（promise1）;</span><br></pre></td></tr></table></figure></p>
+<p><em>图片</em></p>
+<p>由于这个Promise立即得到解决，我们将无法检查Promise的初始状态。因此，让我们创建一个需要一些时间来解决的新Promise。最简单的方法是使用该setTimeOut功能。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">promise2 = <span class="keyword">new</span> <span class="built_in">Promise</span>（<span class="function"><span class="keyword">function</span>（<span class="title">resolve</span>，<span class="title">reject</span>）</span>&#123; </span><br><span class="line">  setTimeout（<span class="function"><span class="keyword">function</span>（）</span>&#123; </span><br><span class="line">    resolve（&#123; </span><br><span class="line">      message：“男人喜欢保守他的话”，</span><br><span class="line">      代码：“aManKeepsHisWord” </span><br><span class="line">    &#125;）; </span><br><span class="line">  &#125;，<span class="number">10</span> * <span class="number">1000</span>）; </span><br><span class="line">&#125;） ; </span><br><span class="line"><span class="built_in">console</span>.log（promise2）;</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码只是创建了一个在10秒后无条件解决的Promise。因此，我们可以检查Promise的状态，直到它被解决。</p>
+<p><em>图片</em></p>
+<p>在解决或拒绝之前的Promise状态<br>一旦十秒结束，Promise就会得到解决。双方PromiseStatus并PromiseValue进行相应的更新。如您所见，我们更新了resolve函数，以便我们可以传递JSON对象而不是简单的字符串。这只是为了表明我们可以在resolve函数中传递其他值。</p>
+<p><em>图片</em></p>
+<p>现在让我们看看一个拒绝的承诺。让我们稍微修改一下这个承诺1。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">keepsHisWord = <span class="literal">false</span>; </span><br><span class="line">promise3 = <span class="keyword">new</span> <span class="built_in">Promise</span>（<span class="function"><span class="keyword">function</span>（<span class="title">resolve</span>，<span class="title">reject</span>）</span>&#123; </span><br><span class="line">  <span class="keyword">if</span>（keepsHisWord）&#123; </span><br><span class="line">    resolve（“男人喜欢保守他的话”）; </span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; </span><br><span class="line">    reject（“男人不想保守他的话”）; </span><br><span class="line">  &#125; </span><br><span class="line">&#125;）; </span><br><span class="line"><span class="built_in">console</span>.log（promise3）;</span><br></pre></td></tr></table></figure></p>
+<p>由于这将创建一个毫无根据的拒绝铬浏览器将显示错误。你现在可以忽略它。我们稍后会再回过头来看看。</p>
+<p><em>图片</em></p>
+<p>承诺中的拒绝<br>我们可以看到PromiseStatus可以有三个不同的值。pending resolved或者rejected当创建promise时PromiseStatus将处于pending状态并且将具有PromiseValueas，undefined直到promise为其中resolved或者rejected.当promise处于resolved或处于rejected状态时，承诺被认为是，settled.因此承诺通常从挂起状态转换为已解决状态。</p>
+<p>现在我们知道如何创建承诺，我们可以看看我们如何使用或处理承诺。这将与理解Promise对象密切相关。</p>
+<h4 id="理解承诺对象"><a href="#理解承诺对象" class="headerlink" title="理解承诺对象"></a>理解承诺对象</h4><p>根据MDN文档</p>
+<blockquote>
+<p>该Promise对象表示异步操作的最终完成（或失败）及其结果值。</p>
+</blockquote>
+<p>Promise对象具有静态方法和prototype methods静态方法Promise对象可以被独立地应用，而prototype methods上的实例要被施加的需求Promise的对象。记住普通方法和原型都返回一个Promise使得更容易理解事物。</p>
+<h4 id="原型方法"><a href="#原型方法" class="headerlink" title="原型方法"></a>原型方法</h4><p>让我们先来看看prototype methods它们有三个。重申请记住，所有这些方法都可以应用于Promise对象的实例，所有这些方法依次返回一个promise。以下所有方法都为promise的不同状态转换分配处理程序。正如我们之前在Promise创建a时看到的那样，它处于pending状态。当一个承诺是基于他们是否是解决一个或多个以下三种方法将被运行fulfilled或rejected。<br>Promise.prototype.catch(onRejected)</p>
+<p>Promise.prototype.then(onFulfilled, onRejected)</p>
+<p>Promise.prototype.finally(onFinally)</p>
+<p>下图显示了流量  .then和  .catch方法。由于它们返回a，Promise它们可以再次链接，这也在图像中显示。如果  .finally声明为承诺，那么只要承诺settled无论是履行还是拒绝，它都将被执行。正如Konstantin Rouda所指出的那样，对最终的支持有限，所以请在使用之前进行检查。</p>
+<p><em>图片</em></p>
+<p>这是一个小故事。你是一个上学的孩子，你问你妈妈的电话。她说：“我将在本月末买一部手机。”</p>
+<p>让我们来看看如果承诺在月末执行，它将如何在JavaScript中查看。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> momsPromise = <span class="keyword">new</span> <span class="built_in">Promise</span>（<span class="function"><span class="keyword">function</span>（<span class="title">resolve</span>，<span class="title">reject</span>）</span>&#123; </span><br><span class="line">  momsSavings = <span class="number">20000</span>; </span><br><span class="line">  priceOfPhone = <span class="number">60000</span>; </span><br><span class="line">  <span class="keyword">if</span>（momsSavings&gt; priceOfPhone）&#123; </span><br><span class="line">    resolve（&#123; </span><br><span class="line">      brand：“iphone”，</span><br><span class="line">      model：“<span class="number">6</span>s” </span><br><span class="line">    &#125;）; </span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; </span><br><span class="line">    reject（ “我们没有足够的储蓄。让我们节省更多的钱。”）; </span><br><span class="line">  &#125; </span><br><span class="line">&#125;）;</span><br><span class="line">momsPromise.then（<span class="function"><span class="keyword">function</span>（<span class="title">value</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.log（“Hurray我把这个手机作为礼物”，<span class="built_in">JSON</span>.stringify（value））; </span><br><span class="line">&#125;）;</span><br><span class="line">momsPromise.catch（功能（原因）&#123; </span><br><span class="line">  <span class="built_in">console</span>.log（“妈妈不能买我的电话因为”，原因）; </span><br><span class="line">&#125;）;</span><br><span class="line">momsPromise.finally（<span class="function"><span class="keyword">function</span>（）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.log（</span><br><span class="line">    “我母亲是否可以给我买电话，我仍然爱她” </span><br><span class="line">  ）; </span><br><span class="line">&#125;）;</span><br></pre></td></tr></table></figure>
+<p>这个输出将是。<br><em>图片</em><br>如果我们将值momsSavings改为200000那么妈妈就可以给儿子送礼了。在这种情况下输出将是<br><em>图片</em></p>
+<p>让我们戴一个消耗这个图书馆的人的帽子。我们正在嘲笑输出和性质，以便我们可以看看如何使用然后有效地捕获。</p>
+<p>既然  .then可以分配两者onFulfilled, onRejected handlers ，而不是单独写  .then，  .catch我们就可以用.then它来做同样的事情  。看起来如下所示。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">momsPromise.then（</span><br><span class="line">  <span class="function"><span class="keyword">function</span>（<span class="title">value</span>）</span>&#123; </span><br><span class="line">    <span class="built_in">console</span>.log（“Hurray我把这款手机作为礼物”，<span class="built_in">JSON</span>.stringify（value））; </span><br><span class="line">  &#125;，</span><br><span class="line">  功能（原因）&#123; </span><br><span class="line">    <span class="built_in">console</span>.log（“妈妈不要买我电话因为“，理由”; </span><br><span class="line">  &#125; </span><br><span class="line">）;</span><br></pre></td></tr></table></figure></p>
+<p>但是为了代码的可读性，我认为最好将它们分开。</p>
+<p>为了确保我们可以在浏览器中运行所有这些示例，或者特定于chrome，我确保我们的代码示例中没有外部依赖项。为了更好地理解其他主题，让我们创建一个函数，它将返回一个随机解决或拒绝的promise，以便我们可以测试各种场景。为了理解异步函数的概念，让我们在函数中引入随机延迟。由于我们需要随机数，让我们首先创建一个随机函数，它将在x和y之间返回一个随机数。</p>
+<p>function getRandomNumber（start = 1，end = 10）{<br>  //当start，end都&gt; = 1且end&gt; start时<br>  返回parseInt（Math.random（）* end）％（end-start + 1）+ start;<br>}</p>
+<p>让我们创建一个能够为我们回报承诺的功能。让我们来调用我们的函数promiseTRRARNOSG，它是别名promiseThatResolvesRandomlyAfterRandomNumnberOfSecondsGenerator。此函数将创建一个承诺，它将在2到10之间的随机秒数之后解析或拒绝。要随机拒绝和解析，我们将创建1到10之间的随机数。如果生成的随机数大于5，我们将解析保证，否则我们会拒绝它。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getRandomNumber</span>（<span class="title">start</span> = 1，<span class="title">end</span> = 10）</span>&#123; </span><br><span class="line">  <span class="comment">//当start和end都&gt; = 1时</span></span><br><span class="line">  返回（<span class="built_in">parseInt</span>（<span class="built_in">Math</span>.random（）* end）％（end  -  start + <span class="number">1</span>））+ start; </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> promiseTRRARNOSG =（promiseThatResolvesRandomlyAfterRandomNumnberOfSecondsGenerator= <span class="function"><span class="keyword">function</span>（）</span>&#123; </span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>（<span class="function"><span class="keyword">function</span>（<span class="title">resolve</span>，<span class="title">reject</span>）</span>&#123; </span><br><span class="line">    <span class="keyword">let</span> randomNumberOfSeconds = getRandomNumber（<span class="number">2</span>,<span class="number">10</span>）; </span><br><span class="line">    setTimeout（<span class="function"><span class="keyword">function</span>（）</span>&#123; </span><br><span class="line">      <span class="keyword">let</span> randomiseResolving = getRandomNumber（<span class="number">1</span>,<span class="number">10</span> ）; </span><br><span class="line">      <span class="keyword">if</span>（randomiseResolving&gt; <span class="number">5</span>）&#123; </span><br><span class="line">        决心（&#123; </span><br><span class="line">          randomNumberOfSeconds：randomNumberOfSeconds，</span><br><span class="line">          randomiseResolving：randomiseResolving </span><br><span class="line">        &#125;）; </span><br><span class="line">      &#125;其他&#123; </span><br><span class="line">        拒绝（&#123; </span><br><span class="line">          randomNumberOfSeconds：randomNumberOfSeconds，</span><br><span class="line">          randomiseResolving：randomiseResolving </span><br><span class="line">        &#125;）; </span><br><span class="line">      &#125; </span><br><span class="line">    &#125;，randomNumberOfSeconds * <span class="number">1000</span>）; </span><br><span class="line">  &#125;）; </span><br><span class="line">&#125;）;</span><br><span class="line"><span class="keyword">var</span> testProimse = promiseTRRARNOSG（）; </span><br><span class="line">testProimse.then（<span class="function"><span class="keyword">function</span>（<span class="title">value</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.log（“当解析promise时的值：”，value）; </span><br><span class="line">&#125;）; </span><br><span class="line">testProimse.catch（<span class="function"><span class="keyword">function</span>（<span class="title">reason</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.log（“当承诺被拒绝的原因：”，原因）; </span><br><span class="line">&#125;）;</span><br><span class="line"><span class="comment">//让我们循环并使用函数创建十个不同的promise来查看一些变体。有些将被解决，有些将被拒绝。</span></span><br><span class="line"><span class="keyword">for</span>（i = <span class="number">1</span>; i &lt;= <span class="number">10</span>; i ++）&#123; </span><br><span class="line">  <span class="keyword">let</span> promise = promiseTRRARNOSG（）; </span><br><span class="line">  promise.then（<span class="function"><span class="keyword">function</span>（<span class="title">value</span>）</span>&#123; </span><br><span class="line">    <span class="built_in">console</span>.log（“当promise被解析时的值：”，value）; </span><br><span class="line">  &#125;）; </span><br><span class="line">  promise.catch（<span class="function"><span class="keyword">function</span>（<span class="title">reason</span>）</span>&#123; </span><br><span class="line">    <span class="built_in">console</span>.log（“当承诺被拒绝的原因：”，原因）; </span><br><span class="line">  &#125;）; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>刷新浏览器页面并在控制台中运行代码以查看不同的输出resolve和reject方案。展望未来，我们将看到如何创建多个承诺并检查其输出而不必执行此操作。</p>
+<h4 id="静态方法"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法</h4><p>Promise对象中有四种静态方法。</p>
+<p>前两个是帮助方法或快捷方式。它们可以帮助您轻松创建已解决或拒绝的承诺。</p>
+<p>Promise.reject(reason)</p>
+<p>帮助您创建被拒绝的承诺。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> promise3 = <span class="built_in">Promise</span>.reject（“不感兴趣”）; </span><br><span class="line">promise3.then（<span class="function"><span class="keyword">function</span>（<span class="title">value</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.log（“这不会运行，因为它是一个已解决的promise。已解析的值是”，value）; </span><br><span class="line">&#125;）; </span><br><span class="line">promise3.catch（<span class="function"><span class="keyword">function</span>（<span class="title">reason</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.log（“这是一个被拒绝的承诺。原因是”，原因）; </span><br><span class="line">&#125;）;</span><br></pre></td></tr></table></figure></p>
+<p>Promise.resolve(value)<br>帮助您创建已解决的承诺。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> promise4 = <span class="built_in">Promise</span>.resolve（<span class="number">1</span>）; </span><br><span class="line">promise4.then（<span class="function"><span class="keyword">function</span>（<span class="title">value</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.log（“这将运行，因为它是一个resovled promise。已解析的值是”，value）; </span><br><span class="line">&#125;）; </span><br><span class="line">promise4.catch（<span class="function"><span class="keyword">function</span>（<span class="title">reason</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.log（“这不会运行，因为它是一个已解决的承诺”，原因）; </span><br><span class="line">&#125;）;</span><br></pre></td></tr></table></figure>
+<p>在旁注中，承诺可以有多个处理程序。所以你可以将上面的代码更新为</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> promise4 = <span class="built_in">Promise</span>.resolve（<span class="number">1</span>）; </span><br><span class="line">promise4.then（<span class="function"><span class="keyword">function</span>（<span class="title">value</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.log（“这将运行，因为它是一个resovled promise。已解析的值是”，value）; </span><br><span class="line">&#125;）; </span><br><span class="line">promise4.then（<span class="function"><span class="keyword">function</span>（<span class="title">value</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.log（“这也可以在添加多个处理程序的情况下运行。打印两次解析后的值为”，value * <span class="number">2</span>）; </span><br><span class="line">&#125;）; </span><br><span class="line">promise4.catch（<span class="function"><span class="keyword">function</span>（<span class="title">reason</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.log（“这不会运行，因为它是一个已解决的承诺”，原因）; </span><br><span class="line">&#125;）;</span><br></pre></td></tr></table></figure>
+<p>输出看起来像:<br><em>图片</em></p>
+<p>接下来的两种方法可以帮助您处理一组承诺。当你处理多个promises时，最好首先创建一个promise数组，然后对promises集进行必要的操作。为了理解这些方法，我们将无法使用我们的方便，promiseTRRARNOSG因为它太随机了。最好有一些确定性的承诺，以便我们能够理解这种行为。让我们创建两个函数。一个将在n秒后解析，一个将在n秒后拒绝。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> promiseTRSANSG =（promiseThatResolvesAfterNSecondsGenerator = <span class="function"><span class="keyword">function</span>（</span></span><br><span class="line"><span class="function">  <span class="title">n</span> = 0 </span></span><br><span class="line"><span class="function">）</span>&#123; </span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>（<span class="function"><span class="keyword">function</span>（<span class="title">resolve</span>，<span class="title">reject</span>）</span>&#123; </span><br><span class="line">    setTimeout（<span class="function"><span class="keyword">function</span>（）</span>&#123; </span><br><span class="line">      resolve（&#123; </span><br><span class="line">        resolvedAfterNSeconds：n </span><br><span class="line">      &#125;）; </span><br><span class="line">    &#125;，n * <span class="number">1000</span>）; </span><br><span class="line">  &#125;）; </span><br><span class="line">&#125; ）; </span><br><span class="line"><span class="keyword">var</span> promiseTRJANSG =（promiseThatRejectsAfterNSecondsGenerator = <span class="function"><span class="keyword">function</span>（</span></span><br><span class="line"><span class="function">  <span class="title">n</span> = 0 </span></span><br><span class="line"><span class="function">）</span>&#123; </span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>（<span class="function"><span class="keyword">function</span>（<span class="title">resolve</span>，<span class="title">reject</span>）</span>&#123; </span><br><span class="line">    setTimeout（<span class="function"><span class="keyword">function</span>（）</span>&#123; </span><br><span class="line">      reject（&#123; </span><br><span class="line">        rejectedAfterNSeconds：n </span><br><span class="line">      &#125;）; </span><br><span class="line">    &#125;，n * <span class="number">1000</span>）; </span><br><span class="line">  &#125;）; </span><br><span class="line">&#125; ）;</span><br></pre></td></tr></table></figure></p>
+<p>现在让我们使用这些辅助函数来理解 Promise.All.</p>
+<h4 id="Promise-All"><a href="#Promise-All" class="headerlink" title="Promise.All"></a>Promise.All</h4><p>根据MDN文档</p>
+<blockquote>
+<p>该Promise.all(iterable)方法返回一个Promise在iterable参数中的所有promise 都已解析或者iterable参数不包含promises时解析的单个方法。它拒绝承认拒绝的第一个承诺。</p>
+</blockquote>
+<p>案例1  ：所有承诺都得到解决。这是最常用的场景。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.time（ “<span class="built_in">Promise</span>.All”）; </span><br><span class="line"><span class="keyword">var</span> promisesArray = []; </span><br><span class="line">promisesArray.push（promiseTRSANSG（<span class="number">1</span>））; </span><br><span class="line">promisesArray.push（promiseTRSANSG（<span class="number">4</span>））; </span><br><span class="line">promisesArray.push（promiseTRSANSG（<span class="number">2</span>））; </span><br><span class="line"><span class="keyword">var</span> handleAllPromises = <span class="built_in">Promise</span>.all（promisesArray）; </span><br><span class="line">handleAllPromises.then（<span class="function"><span class="keyword">function</span>（<span class="title">values</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.timeEnd（“<span class="built_in">Promise</span>.All”）; </span><br><span class="line">  <span class="built_in">console</span>.log（“所有承诺都已解析”，值）; </span><br><span class="line">&#125;）; </span><br><span class="line">handleAllPromises.catch（<span class="function"><span class="keyword">function</span>（<span class="title">reason</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.log（“其中一个承诺因以下原因而失败”，原因）; </span><br><span class="line">&#125;）;</span><br></pre></td></tr></table></figure></p>
+<p><em>图片</em></p>
+<p>从输出中我们需要做出两个重要的观察。</p>
+<p>第一 ：第二个承诺需要2秒才能完成第二个承诺，需要4秒。但正如您在输出中看到的那样，承诺的顺序保留在值中。</p>
+<p>第二 ：我添加了一个控制台计时器，以了解需要多长时间Promise.All。如果承诺是按顺序执行的，那么它应该总共需要1 + 4 + 2 = 7秒。但是从我们的计时器我们看到它只需要4秒钟。这证明所有承诺都是并行执行的。</p>
+<p>案例2：没有承诺时。我认为这是最不常用的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.time（ “<span class="built_in">Promise</span>.All”）; </span><br><span class="line"><span class="keyword">var</span> promisesArray = []; </span><br><span class="line">promisesArray.push（<span class="number">1</span>）; </span><br><span class="line">promisesArray.push（<span class="number">4</span>）; </span><br><span class="line">promisesArray.push（<span class="number">2</span>）; </span><br><span class="line"><span class="keyword">var</span> handleAllPromises = <span class="built_in">Promise</span>.all（promisesArray）; </span><br><span class="line">handleAllPromises.then（<span class="function"><span class="keyword">function</span>（<span class="title">values</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.timeEnd（“<span class="built_in">Promise</span>.All”）; </span><br><span class="line">  <span class="built_in">console</span>.log（“所有承诺都已解析”，值）; </span><br><span class="line">&#125;）; </span><br><span class="line">handleAllPromises.catch（<span class="function"><span class="keyword">function</span>（<span class="title">reason</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.log（“其中一个承诺因以下原因而失败”，原因）; </span><br><span class="line">&#125;）;</span><br></pre></td></tr></table></figure>
+<p><em>图片</em><br>由于数组中没有promise，因此返回的promise将得到解决。</p>
+<p>案例3：它拒绝了第一个承诺拒绝的原因。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.time（ “<span class="built_in">Promise</span>.All”）; </span><br><span class="line"><span class="keyword">var</span> promisesArray = []; </span><br><span class="line">promisesArray.push（promiseTRSANSG（<span class="number">1</span>））; </span><br><span class="line">promisesArray.push（promiseTRSANSG（<span class="number">5</span>））; </span><br><span class="line">promisesArray.push（promiseTRSANSG（<span class="number">3</span>））; </span><br><span class="line">promisesArray.push（promiseTRJANSG（<span class="number">2</span>））; </span><br><span class="line">promisesArray.push（promiseTRSANSG（<span class="number">4</span>））; </span><br><span class="line"><span class="keyword">var</span> handleAllPromises = <span class="built_in">Promise</span>.all（promisesArray）; </span><br><span class="line">handleAllPromises.then（<span class="function"><span class="keyword">function</span>（<span class="title">values</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.timeEnd（“<span class="built_in">Promise</span>.All”）; </span><br><span class="line">  <span class="built_in">console</span>.log（“所有承诺都已解析”，值）; </span><br><span class="line">&#125;）; </span><br><span class="line">handleAllPromises.catch（<span class="function"><span class="keyword">function</span>（<span class="title">reason</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.timeEnd（“<span class="built_in">Promise</span>.All”）; </span><br><span class="line">  <span class="built_in">console</span>.log（“其中一个承诺因以下原因而失败”，原因）; </span><br><span class="line">&#125;）;</span><br></pre></td></tr></table></figure>
+<p><em>图片</em></p>
+<h4 id="Promise-race"><a href="#Promise-race" class="headerlink" title="Promise.race"></a>Promise.race</h4><p>根据MDN文档</p>
+<blockquote>
+<p>该Promise.race(iterable)方法返回一个promise，当一个promrable中的一个promise解析或拒绝时，该promise将被解析或拒绝，具有该promise的值或原因。</p>
+</blockquote>
+<p>案例1：其中一项承诺首先解决。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.time（ “<span class="built_in">Promise</span>.race”）; </span><br><span class="line"><span class="keyword">var</span> promisesArray = []; </span><br><span class="line">promisesArray.push（promiseTRSANSG（<span class="number">4</span>））; </span><br><span class="line">promisesArray.push（promiseTRSANSG（<span class="number">3</span>））; </span><br><span class="line">promisesArray.push（promiseTRSANSG（<span class="number">2</span>））; </span><br><span class="line">promisesArray.push（promiseTRJANSG（<span class="number">3</span>））; </span><br><span class="line">promisesArray.push（promiseTRSANSG（<span class="number">4</span>））; </span><br><span class="line"><span class="keyword">var</span> promisesRace = <span class="built_in">Promise</span>.race（promisesArray）; </span><br><span class="line">promisesRace.then（<span class="function"><span class="keyword">function</span>（<span class="title">values</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.timeEnd（“<span class="built_in">Promise</span>.race”）; </span><br><span class="line">  <span class="built_in">console</span>.log（“禁食承诺已解决”，值）; </span><br><span class="line">&#125;）; </span><br><span class="line">promisesRace.catch（<span class="function"><span class="keyword">function</span>（<span class="title">reason</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.timeEnd（“<span class="built_in">Promise</span>.race”）; </span><br><span class="line">  <span class="built_in">console</span>.log（“最快的承诺被拒绝，原因如下”，原因）; </span><br><span class="line">&#125;）;</span><br></pre></td></tr></table></figure>
+<p>所有承诺都是并行运行的。第三个承诺在2秒内解决。一旦完成，返回的承诺Promise.race就会得到解决。</p>
+<p>案例2：其中一项承诺首先拒绝承诺。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.time（ “<span class="built_in">Promise</span>.race”）; </span><br><span class="line"><span class="keyword">var</span> promisesArray = []; </span><br><span class="line">promisesArray.push（promiseTRSANSG（<span class="number">4</span>））; </span><br><span class="line">promisesArray.push（promiseTRSANSG（<span class="number">6</span>））; </span><br><span class="line">promisesArray.push（promiseTRSANSG（<span class="number">5</span>））; </span><br><span class="line">promisesArray.push（promiseTRJANSG（<span class="number">3</span>））; </span><br><span class="line">promisesArray.push（promiseTRSANSG（<span class="number">4</span>））; </span><br><span class="line"><span class="keyword">var</span> promisesRace = <span class="built_in">Promise</span>.race（promisesArray）; </span><br><span class="line">promisesRace.then（<span class="function"><span class="keyword">function</span>（<span class="title">values</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.timeEnd（“<span class="built_in">Promise</span>.race”）; </span><br><span class="line">  <span class="built_in">console</span>.log（“禁食承诺已解决”，值）; </span><br><span class="line">&#125;）; </span><br><span class="line">promisesRace.catch（<span class="function"><span class="keyword">function</span>（<span class="title">reason</span>）</span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.timeEnd（“<span class="built_in">Promise</span>.race”）; </span><br><span class="line">  <span class="built_in">console</span>.log（“最快的承诺被拒绝，原因如下”，原因）; </span><br><span class="line">&#125;）;</span><br></pre></td></tr></table></figure></p>
+<p><em>图片</em></p>
+<p>所有承诺都是并行运行的。第四个承诺在3秒内被拒绝。一旦完成，返回的承诺将Promise.race被拒绝。</p>
+<p>我编写了所有示例方法，以便我可以测试各种场景，并且可以在浏览器中运行测试。这就是您在示例中看不到任何API调用，文件操作或数据库调用的原因。虽然所有这些都是现实生活中的例子，但您需要额外的努力来设置和测试它。而使用延迟功能可以为您提供类似的方案，而无需额外设置的负担。您可以轻松地使用值来查看和签出不同的方案。您可以使用的组合promiseTRJANSG，promiseTRSANSG和promiseTRRARNOSG方法来模拟足够的情景承诺的全面理解。也使用console.time相关块之前和之后的方法将帮助我们轻松识别promises是并行还是顺序运行。如果您有任何其他有趣的场景或我错过了什么，请告诉我。如果您想在一个地方找到所有代码示例，请查看这个要点。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> keepsHisWord;</span><br><span class="line">keepsHisWord = <span class="literal">true</span>;</span><br><span class="line">promise1 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (keepsHisWord) &#123;</span><br><span class="line">    resolve(<span class="string">"The man likes to keep his word"</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    reject(<span class="string">"The man doesnt want to keep his word"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(promise1);</span><br><span class="line"></span><br><span class="line">promise2 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    resolve(&#123;</span><br><span class="line">      message: <span class="string">"The man likes to keep his word"</span>,</span><br><span class="line">      code: <span class="string">"aManKeepsHisWord"</span></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;, <span class="number">10</span> * <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(promise2);</span><br><span class="line"></span><br><span class="line">keepsHisWord = <span class="literal">false</span>;</span><br><span class="line">promise3 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (keepsHisWord) &#123;</span><br><span class="line">    resolve(<span class="string">"The man likes to keep his word"</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    reject(<span class="string">"The man doesn't want to keep his word"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(promise3);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> momsPromise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">  momsSavings = <span class="number">20000</span>;</span><br><span class="line">  priceOfPhone = <span class="number">60000</span>;</span><br><span class="line">  <span class="keyword">if</span> (momsSavings &gt; priceOfPhone) &#123;</span><br><span class="line">    resolve(&#123;</span><br><span class="line">      brand: <span class="string">"iphone"</span>,</span><br><span class="line">      model: <span class="string">"6s"</span></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    reject(<span class="string">"We donot have enough savings. Let us save some more money."</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line">momsPromise.then(<span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"Hurray I got this phone as a gift "</span>, <span class="built_in">JSON</span>.stringify(value));</span><br><span class="line">&#125;);</span><br><span class="line">momsPromise.catch(<span class="function"><span class="keyword">function</span>(<span class="params">reason</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"Mom coudn't buy me the phone because "</span>, reason);</span><br><span class="line">&#125;);</span><br><span class="line">momsPromise.finally(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(</span><br><span class="line">    <span class="string">"Irrespecitve of whether my mom can buy me a phone or not, I still love her"</span></span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">momsPromise.then(</span><br><span class="line">  <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"Hurray I got this phone as a gift "</span>, <span class="built_in">JSON</span>.stringify(value));</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="keyword">function</span>(<span class="params">reason</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"Mom coudn't buy me the phone because "</span>, reason);</span><br><span class="line">  &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getRandomNumber</span>(<span class="params">start = <span class="number">1</span>, end = <span class="number">10</span></span>) </span>&#123;</span><br><span class="line">  <span class="comment">//works when both start,end are &gt;=1 and end &gt; start</span></span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">parseInt</span>(<span class="built_in">Math</span>.random() * end) % (end-start+<span class="number">1</span>) + start;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getRandomNumber</span>(<span class="params">start = <span class="number">1</span>, end = <span class="number">10</span></span>) </span>&#123;</span><br><span class="line">  <span class="comment">//works when both start and end are &gt;=1</span></span><br><span class="line">  <span class="keyword">return</span> (<span class="built_in">parseInt</span>(<span class="built_in">Math</span>.random() * end) % (end - start + <span class="number">1</span>)) + start;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> promiseTRRARNOSG = (promiseThatResolvesRandomlyAfterRandomNumnberOfSecondsGenerator = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> randomNumberOfSeconds = getRandomNumber(<span class="number">2</span>, <span class="number">10</span>);</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">let</span> randomiseResolving = getRandomNumber(<span class="number">1</span>, <span class="number">10</span>);</span><br><span class="line">      <span class="keyword">if</span> (randomiseResolving &gt; <span class="number">5</span>) &#123;</span><br><span class="line">        resolve(&#123;</span><br><span class="line">          randomNumberOfSeconds: randomNumberOfSeconds,</span><br><span class="line">          randomiseResolving: randomiseResolving</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        reject(&#123;</span><br><span class="line">          randomNumberOfSeconds: randomNumberOfSeconds,</span><br><span class="line">          randomiseResolving: randomiseResolving</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;, randomNumberOfSeconds * <span class="number">1000</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">var</span> testProimse = promiseTRRARNOSG();</span><br><span class="line">testProimse.then(<span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"Value when promise is resolved : "</span>, value);</span><br><span class="line">&#125;);</span><br><span class="line">testProimse.catch(<span class="function"><span class="keyword">function</span>(<span class="params">reason</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"Reason when promise is rejected : "</span>, reason);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// Let us loop through and create ten different promises using the function to see some variation. Some will be resolved and some will be rejected. </span></span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">1</span>; i&lt;=<span class="number">10</span>; i++) &#123;</span><br><span class="line">  <span class="keyword">let</span> promise = promiseTRRARNOSG();</span><br><span class="line">  promise.then(<span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"Value when promise is resolved : "</span>, value);</span><br><span class="line">  &#125;);</span><br><span class="line">  promise.catch(<span class="function"><span class="keyword">function</span>(<span class="params">reason</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"Reason when promise is rejected : "</span>, reason);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> promise3 = <span class="built_in">Promise</span>.reject(<span class="string">"Not interested"</span>);</span><br><span class="line">promise3.then(<span class="function"><span class="keyword">function</span>(<span class="params">value</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"This will not run as it is a resolved promise. The resolved value is "</span>, value);</span><br><span class="line">&#125;);</span><br><span class="line">promise3.catch(<span class="function"><span class="keyword">function</span>(<span class="params">reason</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"This run as it is a rejected promise. The reason is "</span>, reason);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> promise4 = <span class="built_in">Promise</span>.resolve(<span class="number">1</span>);</span><br><span class="line">promise4.then(<span class="function"><span class="keyword">function</span>(<span class="params">value</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"This will run as it is a resovled promise. The resolved value is "</span>, value);</span><br><span class="line">&#125;);</span><br><span class="line">promise4.catch(<span class="function"><span class="keyword">function</span>(<span class="params">reason</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"This will not run as it is a resolved promise"</span>, reason);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> promise4 = <span class="built_in">Promise</span>.resolve(<span class="number">1</span>);</span><br><span class="line">promise4.then(<span class="function"><span class="keyword">function</span>(<span class="params">value</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"This will run as it is a resovled promise. The resolved value is "</span>, value);</span><br><span class="line">&#125;);</span><br><span class="line">promise4.then(<span class="function"><span class="keyword">function</span>(<span class="params">value</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"This will also run as multiple handlers can be added. Printing twice the resolved value which is "</span>, value * <span class="number">2</span>);</span><br><span class="line">&#125;);</span><br><span class="line">promise4.catch(<span class="function"><span class="keyword">function</span>(<span class="params">reason</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"This will not run as it is a resolved promise"</span>, reason);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> promiseTRSANSG = (promiseThatResolvesAfterNSecondsGenerator = <span class="function"><span class="keyword">function</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  n = <span class="number">0</span></span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      resolve(&#123;</span><br><span class="line">        resolvedAfterNSeconds: n</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;, n * <span class="number">1000</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">var</span> promiseTRJANSG = (promiseThatRejectsAfterNSecondsGenerator = <span class="function"><span class="keyword">function</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  n = <span class="number">0</span></span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      reject(&#123;</span><br><span class="line">        rejectedAfterNSeconds: n</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;, n * <span class="number">1000</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.time(<span class="string">"Promise.All"</span>);</span><br><span class="line"><span class="keyword">var</span> promisesArray = [];</span><br><span class="line">promisesArray.push(promiseTRSANSG(<span class="number">1</span>));</span><br><span class="line">promisesArray.push(promiseTRSANSG(<span class="number">4</span>));</span><br><span class="line">promisesArray.push(promiseTRSANSG(<span class="number">2</span>));</span><br><span class="line"><span class="keyword">var</span> handleAllPromises = <span class="built_in">Promise</span>.all(promisesArray);</span><br><span class="line">handleAllPromises.then(<span class="function"><span class="keyword">function</span>(<span class="params">values</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.timeEnd(<span class="string">"Promise.All"</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"All the promises are resolved"</span>, values);</span><br><span class="line">&#125;);</span><br><span class="line">handleAllPromises.catch(<span class="function"><span class="keyword">function</span>(<span class="params">reason</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"One of the promises failed with the following reason"</span>, reason);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.time(<span class="string">"Promise.All"</span>);</span><br><span class="line"><span class="keyword">var</span> promisesArray = [];</span><br><span class="line">promisesArray.push(<span class="number">1</span>);</span><br><span class="line">promisesArray.push(<span class="number">4</span>);</span><br><span class="line">promisesArray.push(<span class="number">2</span>);</span><br><span class="line"><span class="keyword">var</span> handleAllPromises = <span class="built_in">Promise</span>.all(promisesArray);</span><br><span class="line">handleAllPromises.then(<span class="function"><span class="keyword">function</span>(<span class="params">values</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.timeEnd(<span class="string">"Promise.All"</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"All the promises are resolved"</span>, values);</span><br><span class="line">&#125;);</span><br><span class="line">handleAllPromises.catch(<span class="function"><span class="keyword">function</span>(<span class="params">reason</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"One of the promises failed with the following reason"</span>, reason);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.time(<span class="string">"Promise.All"</span>);</span><br><span class="line"><span class="keyword">var</span> promisesArray = [];</span><br><span class="line">promisesArray.push(promiseTRSANSG(<span class="number">1</span>));</span><br><span class="line">promisesArray.push(promiseTRSANSG(<span class="number">5</span>));</span><br><span class="line">promisesArray.push(promiseTRSANSG(<span class="number">3</span>));</span><br><span class="line">promisesArray.push(promiseTRJANSG(<span class="number">2</span>));</span><br><span class="line">promisesArray.push(promiseTRSANSG(<span class="number">4</span>));</span><br><span class="line"><span class="keyword">var</span> handleAllPromises = <span class="built_in">Promise</span>.all(promisesArray);</span><br><span class="line">handleAllPromises.then(<span class="function"><span class="keyword">function</span>(<span class="params">values</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.timeEnd(<span class="string">"Promise.All"</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"All the promises are resolved"</span>, values);</span><br><span class="line">&#125;);</span><br><span class="line">handleAllPromises.catch(<span class="function"><span class="keyword">function</span>(<span class="params">reason</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.timeEnd(<span class="string">"Promise.All"</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"One of the promises failed with the following reason "</span>, reason);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.time(<span class="string">"Promise.race"</span>);</span><br><span class="line"><span class="keyword">var</span> promisesArray = [];</span><br><span class="line">promisesArray.push(promiseTRSANSG(<span class="number">4</span>));</span><br><span class="line">promisesArray.push(promiseTRSANSG(<span class="number">3</span>));</span><br><span class="line">promisesArray.push(promiseTRSANSG(<span class="number">2</span>));</span><br><span class="line">promisesArray.push(promiseTRJANSG(<span class="number">3</span>));</span><br><span class="line">promisesArray.push(promiseTRSANSG(<span class="number">4</span>));</span><br><span class="line"><span class="keyword">var</span> promisesRace = <span class="built_in">Promise</span>.race(promisesArray);</span><br><span class="line">promisesRace.then(<span class="function"><span class="keyword">function</span>(<span class="params">values</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.timeEnd(<span class="string">"Promise.race"</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"The fasted promise resolved"</span>, values);</span><br><span class="line">&#125;);</span><br><span class="line">promisesRace.catch(<span class="function"><span class="keyword">function</span>(<span class="params">reason</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.timeEnd(<span class="string">"Promise.race"</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"The fastest promise rejected with the following reason "</span>, reason);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.time(<span class="string">"Promise.race"</span>);</span><br><span class="line"><span class="keyword">var</span> promisesArray = [];</span><br><span class="line">promisesArray.push(promiseTRSANSG(<span class="number">4</span>));</span><br><span class="line">promisesArray.push(promiseTRSANSG(<span class="number">6</span>));</span><br><span class="line">promisesArray.push(promiseTRSANSG(<span class="number">5</span>));</span><br><span class="line">promisesArray.push(promiseTRJANSG(<span class="number">3</span>));</span><br><span class="line">promisesArray.push(promiseTRSANSG(<span class="number">4</span>));</span><br><span class="line"><span class="keyword">var</span> promisesRace = <span class="built_in">Promise</span>.race(promisesArray);</span><br><span class="line">promisesRace.then(<span class="function"><span class="keyword">function</span>(<span class="params">values</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.timeEnd(<span class="string">"Promise.race"</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"The fasted promise resolved"</span>, values);</span><br><span class="line">&#125;);</span><br><span class="line">promisesRace.catch(<span class="function"><span class="keyword">function</span>(<span class="params">reason</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.timeEnd(<span class="string">"Promise.race"</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"The fastest promise rejected with the following reason "</span>, reason);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Bluebird有一些有趣的功能，如</p>
+<ol>
+<li>Promise.prototype.timeout</li>
+<li>Promise.some</li>
+<li>Promise.promisify<br>我们将在另一篇文章中讨论这些内容。</li>
+</ol>
+<p>我还将再写一篇关于我从异步和等待中学到的文章。</p>
+<p>在结束之前，我想列出我遵循的所有拇指规则，让我的头脑保持在承诺周围。</p>
+<p>Thumb使用promises的规则</p>
+<ol>
+<li>无论何时使用异步或阻塞代码，都要使用promises。</li>
+<li>resolve映射到then并reject映射到catch所有实际目的。</li>
+<li>确保为所有承诺编写两者  .catch和  .then方法。</li>
+<li>如果在两种情况下都需要做某些事情 .finally</li>
+<li>我们只有一次改变每个承诺。</li>
+<li>我们可以为单个承诺添加多个处理程序。</li>
+<li>Promise对象中所有方法的返回类型，无论是静态方法还是原型方法，都是aPromise</li>
+<li>在Promise.all承诺的顺序被保持在值变量而不管其中承诺首先解决。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/translate/" rel="tag"># translate</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/21/Consider-job-hopping/" rel="next" title="跳槽？">
+                <i class="fa fa-chevron-left"></i> 跳槽？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">SanHaoXian</p>
+              <p class="site-description motion-element" itemprop="description">记录生活,记录编程学习</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#了解JavaScript中的Promise"><span class="nav-number">1.</span> <span class="nav-text">了解JavaScript中的Promise</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#背景"><span class="nav-number">1.0.1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#外行的Promise"><span class="nav-number">1.0.2.</span> <span class="nav-text">外行的Promise</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JavaScript中的Promise"><span class="nav-number">1.1.</span> <span class="nav-text">JavaScript中的Promise</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创造Promise"><span class="nav-number">1.1.1.</span> <span class="nav-text">创造Promise</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#理解承诺对象"><span class="nav-number">1.1.2.</span> <span class="nav-text">理解承诺对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#原型方法"><span class="nav-number">1.1.3.</span> <span class="nav-text">原型方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态方法"><span class="nav-number">1.1.4.</span> <span class="nav-text">静态方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Promise-All"><span class="nav-number">1.1.5.</span> <span class="nav-text">Promise.All</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Promise-race"><span class="nav-number">1.1.6.</span> <span class="nav-text">Promise.race</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SanHaoXian</span>
+
+  
+</div>
+
+
+  
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Hi, I'm San</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
