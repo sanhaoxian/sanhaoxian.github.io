@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="translate," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="这几天闲来无事，翻译几篇觉得还不错的文章收录到自己的博客中，顺便温习一下基础知识（[捂脸]靠着谷歌翻译，自己修饰一下，看起来好别扭哦…）  这里需要提醒的是需科学上网才能查看原文…原文链接 新的总是最好的！（New is always better!） 在此之前你肯定使用过JavaScript的拷贝，甚至你都不知道。也许你听说过：在函数式编程的规范中，你不应该修改任何现有的数据。目的是：你必须知">
+<meta name="keywords" content="translate">
+<meta property="og:type" content="article">
+<meta property="og:title" content="译：在javascript中如何区别深拷贝和浅拷贝？">
+<meta property="og:url" content="http://yoursite.com/2019/02/25/deep-shallow-copy/index.html">
+<meta property="og:site_name" content="San&#39;s Blog">
+<meta property="og:description" content="这几天闲来无事，翻译几篇觉得还不错的文章收录到自己的博客中，顺便温习一下基础知识（[捂脸]靠着谷歌翻译，自己修饰一下，看起来好别扭哦…）  这里需要提醒的是需科学上网才能查看原文…原文链接 新的总是最好的！（New is always better!） 在此之前你肯定使用过JavaScript的拷贝，甚至你都不知道。也许你听说过：在函数式编程的规范中，你不应该修改任何现有的数据。目的是：你必须知">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-02-25T15:07:26.616Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="译：在javascript中如何区别深拷贝和浅拷贝？">
+<meta name="twitter:description" content="这几天闲来无事，翻译几篇觉得还不错的文章收录到自己的博客中，顺便温习一下基础知识（[捂脸]靠着谷歌翻译，自己修饰一下，看起来好别扭哦…）  这里需要提醒的是需科学上网才能查看原文…原文链接 新的总是最好的！（New is always better!） 在此之前你肯定使用过JavaScript的拷贝，甚至你都不知道。也许你听说过：在函数式编程的规范中，你不应该修改任何现有的数据。目的是：你必须知">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/25/deep-shallow-copy/"/>
+
+
+
+
+
+  <title>译：在javascript中如何区别深拷贝和浅拷贝？ | San's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">San's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/25/deep-shallow-copy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SanHaoXian">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="San's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">译：在javascript中如何区别深拷贝和浅拷贝？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-25T23:02:45+08:00">
+                2019-02-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Javascript/" itemprop="url" rel="index">
+                    <span itemprop="name">Javascript</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>这几天闲来无事，翻译几篇觉得还不错的文章收录到自己的博客中，顺便温习一下基础知识（[捂脸]靠着谷歌翻译，自己修饰一下，看起来好别扭哦…）</p>
+</blockquote>
+<p><em>这里需要提醒的是需科学上网才能查看原文…</em><br><a href="https://medium.freecodecamp.org/copying-stuff-in-javascript-how-to-differentiate-between-deep-and-shallow-copies-b6d8c1ef09cd" target="_blank" rel="noopener">原文链接</a></p>
+<p>新的总是最好的！（New is always better!）</p>
+<p>在此之前你肯定使用过JavaScript的拷贝，甚至你都不知道。也许你听说过：在函数式编程的规范中，你不应该修改任何现有的数据。目的是：你必须知道在javascript中如何安全的拷贝值。今天，我们学习将如何做到拷贝同时避开陷阱。</p>
+<p>首先，什么是拷贝？</p>
+<p>副本看起来就像原来的一样，但不是，当你修改副本是，你会希望原来的值保持不变，只是修改副本。</p>
+<p>在程序中我们将值存储到变量中。拷贝的意思是：你将创建一个具有相同值的新的变量。然而，这里有个的陷阱需要考虑一下：深拷贝和浅拷贝。深拷贝：将新变量的所有值并和原来的值断开连接；浅拷贝：某些子值依旧和原来的值相关联。</p>
+<blockquote>
+<p>想要真正明白拷贝，你必须明白JavaScript是如何存储值的；</p>
+</blockquote>
+<h4 id="基础数据类型"><a href="#基础数据类型" class="headerlink" title="基础数据类型"></a>基础数据类型</h4><p>基础数据类型包括如下：</p>
+<ul>
+<li>Number - e.g. 1</li>
+<li>String - e.g. ‘Hello’</li>
+<li>Boolean- e.g. true</li>
+<li>undefined</li>
+<li>null</li>
+<li>Symbol</li>
+</ul>
+<p>当你创建值的时候，它们和变量紧密耦合。它们只需要执行一次，这意味着你不必担心在JavaScript中赋值原始数据类型；当你复制时，它就是一个真实的副本。我们来看一个例子吧<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> b = a <span class="comment">// this is the copy</span></span><br><span class="line">b = <span class="number">6</span>;</span><br><span class="line"><span class="built_in">console</span>.log(b); <span class="comment">//6</span></span><br><span class="line"><span class="built_in">console</span>.log(a); <span class="comment">//5</span></span><br></pre></td></tr></table></figure></p>
+<p>通过执行b=a，你完成了拷贝。现在，当你重新赋值给b，b的值会改变，而a的值不会；</p>
+<h4 id="引用类型数据-–-Objects-和-Arrays"><a href="#引用类型数据-–-Objects-和-Arrays" class="headerlink" title="引用类型数据 – Objects 和 Arrays"></a>引用类型数据 – Objects 和 Arrays</h4><p>从技术上来看，arrays也是objects，所以他们的定位是一致的。稍后将会详细介绍它们.</p>
+<p>在JavaScript中引用类型非常有趣，这些值实际上在实例化的时候只存储了一次，并且分配给变量的只是创建的一个指针（或者说引用、地址线路）.</p>
+<p>现在，如果我实现一个拷贝：b=a，然后修改嵌套在b里面的某个值，它实际上会修改嵌套在a里面的值。因为a和b实际上指向的是同一个值。比如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = &#123;</span><br><span class="line">    en: <span class="string">'Hello'</span>,</span><br><span class="line">    de: <span class="string">'Hello'</span>,</span><br><span class="line">    es: <span class="string">'Hola'</span>,</span><br><span class="line">    pt: <span class="string">'Ola'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> b = a;</span><br><span class="line">b.pt = <span class="string">'Oi'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(b.pt)  <span class="comment">//oi;</span></span><br><span class="line"><span class="built_in">console</span>.log(a.pt)  <span class="comment">//oi</span></span><br></pre></td></tr></table></figure></p>
+<p>在上述的例子中，我们实际上创建一个浅拷贝。这是通常是存在问题的，因为我们希望原始的变量具有原始值，而不会收到改变。当我们访问它，我们有时候会得到这个错误。在你发现这个错误之前你可能会因为它调试一段时间。很多开发者并没有真正掌握这个概念，也不希望出现这个错误。</p>
+<p>接下来看看我们如何拷贝object和arrays</p>
+<h4 id="Objects"><a href="#Objects" class="headerlink" title="Objects"></a>Objects</h4><p>有许多种拷贝Objects的方法，特别是javascript新的扩展和改进的规范</p>
+<h6 id="扩展运算符"><a href="#扩展运算符" class="headerlink" title="扩展运算符"></a>扩展运算符</h6><p>根据ES2015的介绍，这个运算符非常棒，因为它非常简洁。它将所有的值“扩展”到一个新的对象（Object）当中，你可以试试像下面那样使用它<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = &#123;</span><br><span class="line">    en: <span class="string">'Bye'</span>,</span><br><span class="line">    de: <span class="string">'Tshcuss'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> b = &#123;...a&#125;</span><br><span class="line">b.de = <span class="string">'Ciao'</span></span><br><span class="line"><span class="built_in">console</span>.log(b.de) <span class="comment">//ciao</span></span><br><span class="line"><span class="built_in">console</span>.log(a.de) <span class="comment">//tschuss</span></span><br></pre></td></tr></table></figure></p>
+<p>你也可以使用扩展运算符，合并两个对象（Object），例如：const c = {…a…b};</p>
+<h3 id="Object-assign"><a href="#Object-assign" class="headerlink" title="Object.assign"></a>Object.assign</h3><p>在扩展运算符之前，他可能是使用最多的了。object.assign基本上做的同样的事情。你必须要小心，在object.assign的第一个参数实际上是被修改并返回的。因此，请确保将对象赋值作为第二个参数；通常，您只需传递一个空对象作为第一个参数，以防止修改任何现有数据</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = &#123;</span><br><span class="line">    en: <span class="string">'Bye'</span>,</span><br><span class="line">    de: <span class="string">'Tschuss'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span>  b = <span class="built_in">Object</span>.assign(&#123;&#125;, a)</span><br><span class="line">b.de = <span class="string">'Ciao'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(b.de) <span class="comment">// Ciao</span></span><br><span class="line"><span class="built_in">console</span>.log(a.de) <span class="comment">// tschuss</span></span><br></pre></td></tr></table></figure>
+<h3 id="陷阱：嵌套对象（Nested-Objects）"><a href="#陷阱：嵌套对象（Nested-Objects）" class="headerlink" title="陷阱：嵌套对象（Nested Objects）"></a>陷阱：嵌套对象（Nested Objects）</h3><p>正如之前所说的，在处理拷贝对象的时候有个警告，那就是究竟怎么样的对象适用于上述的方法。当你拷贝一个嵌套对象或者数组的时候，不会复制该对象内的嵌套对象，因为它们只是指针/参考。因此，如果更改嵌套对象，则会为两个实例更改它，这意味着您最终会再次执行浅层复制。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = &#123;</span><br><span class="line">    foods: &#123;</span><br><span class="line">        dinner: <span class="string">'Pasta'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> b = &#123;...a&#125;</span><br><span class="line">b.foods.dinner = <span class="string">'Soup'</span> <span class="comment">// changes for both objects</span></span><br><span class="line"><span class="built_in">console</span>.log(b.foods.dinner); <span class="comment">//Soup</span></span><br><span class="line"><span class="built_in">console</span>.log(a.foods.dinner); <span class="comment">//Soup</span></span><br></pre></td></tr></table></figure>
+<p>完成一次深拷贝，你必须思考，为了防止这种情况是手动赋值所有嵌套对象；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = &#123;</span><br><span class="line">    foods: &#123;</span><br><span class="line">        dinner: <span class="string">'Pasta'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> b = &#123;<span class="attr">foods</span>: &#123;...a.foods&#125;&#125;</span><br><span class="line">b.foods.dinner = <span class="string">'Soup'</span></span><br><span class="line"><span class="built_in">console</span>.log(b.foods.dinner)  <span class="comment">//Soup</span></span><br><span class="line"><span class="built_in">console</span>.log(a.foods.dinner)  <span class="comment">//Pasta</span></span><br></pre></td></tr></table></figure>
+<p>当对象拥有更多的属性不止只有一层属性时，如果您想知道该怎么做。你可以充分发挥扩展运算符。它们会覆盖原始值，例如const b = {…a, foods:{…a.foods}}</p>
+<h3 id="不假思索地制作深拷贝"><a href="#不假思索地制作深拷贝" class="headerlink" title="不假思索地制作深拷贝"></a>不假思索地制作深拷贝</h3><p>如果你不知道嵌套结构有多深，那该怎么办？手动浏览大对象并手动复制每个嵌套对象可能非常繁琐。可能会非常乏味手动的复制嵌套对象和比较大的对象，这有一种方法可以不经思索地复制一切，您只需对对象进行字符串化并在以下情况下解析它：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = &#123;</span><br><span class="line">    foods: &#123;</span><br><span class="line">        dinner: <span class="string">'Pasta'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> b = <span class="built_in">JSON</span>.parse(<span class="built_in">JSON</span>.stringify(a))</span><br><span class="line">b.foods.dinner = <span class="string">'Soup'</span></span><br><span class="line"><span class="built_in">console</span>.log(b.foods.dinner) <span class="comment">//Soup</span></span><br><span class="line"><span class="built_in">console</span>.log(a.foods.dinner) <span class="comment">//Pasta</span></span><br></pre></td></tr></table></figure></p>
+<p><strong><em>在这里，您必须考虑到您将无法复制自定义类实例，因此您只能在复制具有本机JavaScript值的对象时使用它。</em></strong></p>
+<h3 id="Arrays"><a href="#Arrays" class="headerlink" title="Arrays"></a>Arrays</h3><p>复制数组与复制对象一样常见。它背后的许多逻辑是相似的，因为数组也只是在底层的对象。</p>
+<h4 id="在扩展运算符"><a href="#在扩展运算符" class="headerlink" title="在扩展运算符"></a>在扩展运算符</h4><p>就像复制对象那样，你也可以使用扩展运算符来拷贝数组：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="keyword">let</span> b = [...a];</span><br><span class="line">b[<span class="number">1</span>] = <span class="number">4</span></span><br><span class="line"><span class="built_in">console</span>.log(b[<span class="number">1</span>])  <span class="comment">//4</span></span><br><span class="line"><span class="built_in">console</span>.log(a[<span class="number">1</span>])  <span class="comment">//2</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="Array-functions-map-filter-reduce"><a href="#Array-functions-map-filter-reduce" class="headerlink" title="Array functions - map,filter,reduce"></a>Array functions - map,filter,reduce</h4><p>这些方法将返回一个新数组，其中包含原始数组的所有（或某些）值。在这样做的同时，您还可以修改值，这非常方便：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="keyword">let</span> b = a.map(<span class="function"><span class="params">el</span>=&gt;</span>el);</span><br><span class="line">b[<span class="number">1</span>] = <span class="number">4</span></span><br><span class="line"><span class="built_in">console</span>.log(b[<span class="number">1</span>]); <span class="comment">//4</span></span><br><span class="line"><span class="built_in">console</span>.log(a[<span class="number">1</span>]); <span class="comment">//2</span></span><br></pre></td></tr></table></figure></p>
+<p>或者，您可以在复制时更改所需的元素：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line"><span class="keyword">const</span> b = a.map(<span class="function">(<span class="params">el, index</span>) =&gt;</span> index === <span class="number">1</span> ? <span class="number">4</span> : el)</span><br><span class="line"><span class="built_in">console</span>.log(b[<span class="number">1</span>]) <span class="comment">// 4</span></span><br><span class="line"><span class="built_in">console</span>.log(a[<span class="number">1</span>]) <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+<h4 id="Array-slice"><a href="#Array-slice" class="headerlink" title="Array.slice"></a>Array.slice</h4><p>此方法通常用于返回元素的子集，从特定索引开始，并可选地在原始数组的特定索引处结束。使用array.slice（）或array.slice（0）时，最终会得到原始数组的副本。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line"><span class="keyword">let</span> b = a.slice(<span class="number">0</span>)</span><br><span class="line">b[<span class="number">1</span>] = <span class="number">4</span></span><br><span class="line"><span class="built_in">console</span>.log(b[<span class="number">1</span>]) <span class="comment">// 4</span></span><br><span class="line"><span class="built_in">console</span>.log(a[<span class="number">1</span>]) <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+<h4 id="嵌套数组"><a href="#嵌套数组" class="headerlink" title="嵌套数组"></a>嵌套数组</h4><p>与对象类似，使用上述方法复制具有另一个数组或对象的数组将生成浅拷贝。为了防止这种情况，还使用JSON.parse（JSON.stringify（someArray））。</p>
+<h3 id="惊喜：复制自定义类的实例"><a href="#惊喜：复制自定义类的实例" class="headerlink" title="惊喜：复制自定义类的实例"></a>惊喜：复制自定义类的实例</h3><p>如果您已经是JavaScript专业人员并且处理自定义构造函数或类，那么您可能也希望复制这些函数或类的实例。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/translate/" rel="tag"># translate</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/24/what-is-promise/" rel="next" title="译：了解JavaScript中的Promise">
+                <i class="fa fa-chevron-left"></i> 译：了解JavaScript中的Promise
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">SanHaoXian</p>
+              <p class="site-description motion-element" itemprop="description">记录生活,记录编程学习</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基础数据类型"><span class="nav-number">1.</span> <span class="nav-text">基础数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#引用类型数据-–-Objects-和-Arrays"><span class="nav-number">2.</span> <span class="nav-text">引用类型数据 – Objects 和 Arrays</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Objects"><span class="nav-number">3.</span> <span class="nav-text">Objects</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#扩展运算符"><span class="nav-number">3.0.1.</span> <span class="nav-text">扩展运算符</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-assign"><span class="nav-number"></span> <span class="nav-text">Object.assign</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#陷阱：嵌套对象（Nested-Objects）"><span class="nav-number"></span> <span class="nav-text">陷阱：嵌套对象（Nested Objects）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不假思索地制作深拷贝"><span class="nav-number"></span> <span class="nav-text">不假思索地制作深拷贝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arrays"><span class="nav-number"></span> <span class="nav-text">Arrays</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在扩展运算符"><span class="nav-number">1.</span> <span class="nav-text">在扩展运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Array-functions-map-filter-reduce"><span class="nav-number">2.</span> <span class="nav-text">Array functions - map,filter,reduce</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Array-slice"><span class="nav-number">3.</span> <span class="nav-text">Array.slice</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#嵌套数组"><span class="nav-number">4.</span> <span class="nav-text">嵌套数组</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#惊喜：复制自定义类的实例"><span class="nav-number"></span> <span class="nav-text">惊喜：复制自定义类的实例</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SanHaoXian</span>
+
+  
+</div>
+
+
+  
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Hi, I'm San</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
