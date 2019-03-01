@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="translate," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="原文链接 由于数量惊人的插件、工具、和各种东西让你的开发变得更加容易，很多程序员开始编写应用而没有深入了解某些东西底层是如何工作的。javascript就是这种行为的典型代表，他是最复杂的语言值，同时也是最为广泛的。许多开发者都因为使用高级工具或者抽象语言糟糕的部分，而被JavaScript所吸引。 你仍然可以利用JavaScript构建出非常棒的应用，研究JavaScript的问题对自身非常有好">
+<meta name="keywords" content="translate">
+<meta property="og:type" content="article">
+<meta property="og:title" content="译：明白在JavaScript中的原型链和继承">
+<meta property="og:url" content="http://yoursite.com/2019/03/01/prototype01/index.html">
+<meta property="og:site_name" content="San&#39;s Blog">
+<meta property="og:description" content="原文链接 由于数量惊人的插件、工具、和各种东西让你的开发变得更加容易，很多程序员开始编写应用而没有深入了解某些东西底层是如何工作的。javascript就是这种行为的典型代表，他是最复杂的语言值，同时也是最为广泛的。许多开发者都因为使用高级工具或者抽象语言糟糕的部分，而被JavaScript所吸引。 你仍然可以利用JavaScript构建出非常棒的应用，研究JavaScript的问题对自身非常有好">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-01T13:24:51.759Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="译：明白在JavaScript中的原型链和继承">
+<meta name="twitter:description" content="原文链接 由于数量惊人的插件、工具、和各种东西让你的开发变得更加容易，很多程序员开始编写应用而没有深入了解某些东西底层是如何工作的。javascript就是这种行为的典型代表，他是最复杂的语言值，同时也是最为广泛的。许多开发者都因为使用高级工具或者抽象语言糟糕的部分，而被JavaScript所吸引。 你仍然可以利用JavaScript构建出非常棒的应用，研究JavaScript的问题对自身非常有好">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/01/prototype01/"/>
+
+
+
+
+
+  <title>译：明白在JavaScript中的原型链和继承 | San's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">San's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/01/prototype01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SanHaoXian">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="San's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">译：明白在JavaScript中的原型链和继承</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-01T21:23:16+08:00">
+                2019-03-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Javascript/" itemprop="url" rel="index">
+                    <span itemprop="name">Javascript</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://hackernoon.com/understanding-javascript-prototype-and-inheritance-d55a9a23bde2" target="_blank" rel="noopener">原文链接</a></p>
+<p>由于数量惊人的插件、工具、和各种东西让你的开发变得更加容易，很多程序员开始编写应用而没有深入了解某些东西底层是如何工作的。javascript就是这种行为的典型代表，他是最复杂的语言值，同时也是最为广泛的。许多开发者都因为使用高级工具或者抽象语言糟糕的部分，而被JavaScript所吸引。</p>
+<p>你仍然可以利用JavaScript构建出非常棒的应用，研究JavaScript的问题对自身非常有好处。在js生态系统不断变化的过程中，理解那些怪异的部分是区分菜鸟和高级开发人员；其他所有工具都是建立在基础之上的。理解这些将带给你更广阔的视野和改变你开发过程的看法。</p>
+<p>JS中的继承已经讨论了很长时间了。我从开始学习JS通过参加训练营课程，目的是获得在日常编码挑战中所需的使用知识。我们被告知糟糕的javascript语言缺乏OO模式以及我们如何打破我们的背景以使它们工作。教师们很快完成了原型以及我们如何用他来模仿课堂行为，而没有深入了解它的工作方式（因为他们也不了结它）。</p>
+<p>因此我觉得js是一个残缺的语言，因为它缺乏其他语言的能力，比如拿来即用的类，所以我们不得不使用各种疯狂的方法，使它适合我们认为正确的。然后我开始思考，如果它难以学习，导致不合逻辑的行为，有很多障碍，也许原型不是正确的方法，在阅读klye Simpson关于原型的书后，我得出结论：许多人将JavaScript归咎于他们自己无法学习新概念，JS有它具体的细节，我将介绍原型继承的工作原理以及它的的问题。</p>
+<h4 id="什么是原型？"><a href="#什么是原型？" class="headerlink" title="什么是原型？"></a>什么是原型？</h4><p>几乎JavaScript中所有的对象都具有prototype属性。通过使用它更具体地说是原型链，我们可以模仿继承。原型是对另一个对象的引用，只要JS无法在当前对象中找到你要的属性，就会使用它；简单地说，每当你在一个对象上调用一个属性并且它不存在时，JavaScript就会转到原型对象并在那里寻找它。如果找到了就会调用，如果没有将会去最终去查找object对象属性，它会冒泡到object.prototype。还是没有将会返回undefined。这是原型链的本质合JavaScript继承背后的行为。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Animal</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Animal.prototype.sleep = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name+<span class="string">':Zzz...'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Dog</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Create a reference for the prototype</span></span><br><span class="line">Dog.prototype = <span class="built_in">Object</span>.create(<span class="keyword">new</span> Animal());</span><br><span class="line">Dog.prototype.makeSound = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name+<span class="string">':Woof, Woof!'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> dog = <span class="keyword">new</span> Dog(<span class="string">'Lassie'</span>);</span><br><span class="line">dog.makeSound(); <span class="comment">// Lassie: Woof, Woof!</span></span><br><span class="line">dog.sleep(); <span class="comment">// Lassie: Zzz...</span></span><br><span class="line">dog.missing(); <span class="comment">//Throws Error</span></span><br></pre></td></tr></table></figure>
+<p>当你第一次遇见原型时，上述代码可能是难以理解的，让我们分解它。我们从第20行开始，使用new关键字，我们使用第9行的Dog构造函数创建一个新对象。这给了我们一个带有name属性的对象和到它原型的makeSound函数。当我们调用makeSound时，它在当前对象(dog)的上下文中执行，我们得到正确的输出。</p>
+<p>当我们调用sleep()，很明显在Dog中不存在，所以通过原型链找到Animal，发现在这并且调用sleep()；在最后一行，我们调用missing()函数，但并没有发现不存在，js将会一直向上查找原型链到Object.prototype，最后找不到定义就跑出一个错误。结束；</p>
+<p>就像你看那样，我们并没有使用Class关键字，我们并没有定义一个类基于这个类进行扩展或者类似的行为。这更像是一个委托而不是继承。在JS中每一个对象都有prototype属性，用于指向另一个对象，如果在当前对象中找不到我们寻找的属性，则该对象应该被委派责任，没有什么花哨的东西，只要它无法处理任务，对象就是将责任委托给它（它应该是指原型链吧…）</p>
+<h4 id="Shadowing-遮蔽-覆盖（直译好像不太对劲，实在是不会翻译）"><a href="#Shadowing-遮蔽-覆盖（直译好像不太对劲，实在是不会翻译）" class="headerlink" title="Shadowing 遮蔽 覆盖（直译好像不太对劲，实在是不会翻译）"></a>Shadowing 遮蔽 覆盖（直译好像不太对劲，实在是不会翻译）</h4><p>我们再次回顾继承的过程，我们就知道我们经常需要覆盖属性和方法。在原型继承中，这称之为属性覆盖。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Animal</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Animal.prototype.sleep = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name + <span class="string">': Zzz...'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Dog</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create a reference for the prototype</span></span><br><span class="line">Dog.prototype = <span class="built_in">Object</span>.create(<span class="keyword">new</span> Animal());</span><br><span class="line"></span><br><span class="line">Dog.prototype.makeSound = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name + <span class="string">': Woof woof!'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Dog.prototype.sleep = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name + <span class="string">': Overriding Zzzz....'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> dog = <span class="keyword">new</span> Dog(<span class="string">'Lassie'</span>);</span><br><span class="line">dog.makeSound(); <span class="comment">// Lassie: Woof woof!</span></span><br><span class="line">dog.sleep(); <span class="comment">// Lassie: Overriding Zzzz....</span></span><br></pre></td></tr></table></figure>
+<p>在这我们做的是在dog的原型上创建一个具有相同名称的属性，所以，当我们调用它的时候，他会在那里找到它并停止原型链冒泡（停止向上查找）。正如你所看到的那样，我们没有在任何地方使用override（覆盖）关键字，我们仅是在Dog对象上声明属性，因此，JavaScript不会再去原型链中开始寻找它（有点感觉想就近查找，有就有，没有再去翻看查找）；</p>
+<h4 id="继承的问题"><a href="#继承的问题" class="headerlink" title="继承的问题"></a>继承的问题</h4><p>如果你有阅读过我之前的文章，在这我可以告诉你，javascript总是有它具体的细节，不能正确的理解它会给你带来很大的麻烦。在某些时候，你可以覆盖属性，但再起内部调用具有相同名称的父函数。在其他编程语言中你可能会使用super(),但在这有点棘手。如果你在属性覆盖的地方使用这种方法并调用this.sleep()；你将组中调用同一个函数，结果将是一个递归，一次我们必须想另一个解决问题的方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Dog.prototype.sleep = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    Animal.prototye.sleep();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这听起来像是一个好办法，但当你执行它，你会发现不会得到期望的结果，因为上下文绑定是不正确的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Dog.prototype.sleep = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    Animal.prototype.sleep.call(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过像这样执行它，我们使用当前函数的上下文绑定来调用Animal上的函数。换句话说，我们使用当前Dog的数据调用Animal的睡眠功能，这是最简单的解释了。</p>
+<h4 id="继承的概念"><a href="#继承的概念" class="headerlink" title="继承的概念"></a>继承的概念</h4><p>对我来说，最困难的事之一就是<strong>原型</strong>属性的意义。我曾尝试在这个词和继承过程之间建立一些心理联系，直到我意识到它们真的没有联系。我们正在做的只是滥用原型行为委托模仿继承，而实际上我们没有它。为了给你另一个粒子，说明我们基于类的层次结构的概念是如何与JS原型不同的-我向你展示了构造函数属性；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(dog.constructor); <span class="comment">//[Function: Animal]</span></span><br></pre></td></tr></table></figure>
+<p>等等？这将返回Animal函数，因为它在创建对象时附加到Dog属性。这再次表明，这些方法和属性没有考虑到oo设计。</p>
+<h4 id="ES6-Classes"><a href="#ES6-Classes" class="headerlink" title="ES6 Classes"></a>ES6 Classes</h4><p>从ES6开始，你可以说JavaScript中的继承层次结构问题已得到解决。我们得到Class关键字以及伴随的所有其他好东西。我们可以定义一个Class，扩展它们使用构造函数，和super关键字去访问父类的方法，而不需要以上那些丑陋的代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span></span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(name)&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    sleep()&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`$(this.name): Zzz...`</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(name)&#123;</span><br><span class="line">        <span class="keyword">super</span>(name);</span><br><span class="line">    &#125;</span><br><span class="line">    bark()&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`$(this.name)：Woof, Woof!`</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">dog = <span class="keyword">new</span> Dog(<span class="string">'Lassie'</span>);</span><br><span class="line">dog.bark();  <span class="comment">//Lassie: Woof, Woof!</span></span><br><span class="line">dog.sleep(); <span class="comment">//Lassie: Zzz...</span></span><br></pre></td></tr></table></figure>
+<p>如果你已经熟悉了类，那看起来会好很多，它移除了原型关键字的不必要重复，Object.create()的使用以及我们为了调用“父”类的方法而必须做的黑暗魔法；你也拥有更适合的语法并更容易理解正在做的事情。ES6的代码和上面的原型代码或多或少地完全相同，但新标准更容易理解。</p>
+<p>现在你需要记住的是，这种语法（大部分）只是原型的美化版本；它真正简化了开发过程，使具有其他语言背景的人更容易理解。但需要考虑的是，由于同样的原因，ES6类比原型的语法糖仍然存在一些问题</p>
+<p>因为原型方法更像是委托而不是真正的继承，父对象作为参考传递，在其他语言中，在创建对象时，你会获得它的功能副本，包括父类。因此，在javascript中，子对象可以访问父函数，及时他们是在子对象之后创建的。这是由于原型只是一个参考，而不是具体的对象。这是一个热线，当对象丢失特定属性时，它会用来寻找出路。</p>
+<h4 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h4><p>在ES6中引入“真实”类之前，整个继承概念被搞砸了，并且（通常）以错误的方式进行教学。原型更像是一个委托工具，它们的行为并不像类。现在使用现代方法，我们几乎可以创建普通的类层次结构并为它们使用可理解的语法，但要警惕可能出现的问题。这种语法只是内部发生的美丽外观。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/translate/" rel="tag"># translate</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/25/deep-shallow-copy/" rel="next" title="译：在javascript中如何区别深拷贝和浅拷贝？">
+                <i class="fa fa-chevron-left"></i> 译：在javascript中如何区别深拷贝和浅拷贝？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">SanHaoXian</p>
+              <p class="site-description motion-element" itemprop="description">记录生活,记录编程学习</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是原型？"><span class="nav-number">1.</span> <span class="nav-text">什么是原型？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Shadowing-遮蔽-覆盖（直译好像不太对劲，实在是不会翻译）"><span class="nav-number">2.</span> <span class="nav-text">Shadowing 遮蔽 覆盖（直译好像不太对劲，实在是不会翻译）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#继承的问题"><span class="nav-number">3.</span> <span class="nav-text">继承的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#继承的概念"><span class="nav-number">4.</span> <span class="nav-text">继承的概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ES6-Classes"><span class="nav-number">5.</span> <span class="nav-text">ES6 Classes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结论"><span class="nav-number">6.</span> <span class="nav-text">结论</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SanHaoXian</span>
+
+  
+</div>
+
+
+  
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Hi, I'm San</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
